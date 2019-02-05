@@ -1,0 +1,42 @@
+Package: stencilaprocessor
+Type: Package
+Title: A stencil Processor class
+Description: A R package implementing a stencil Processor class.
+Authors@R: c(person("Nokome", "Bentley", email = "nokome@stenci.la", role = c("aut", "cre")))
+URL: https://github.com/stencila/r-processor#readme
+BugReports: https://github.com/stencila/r-processor/issues
+License: Apache-2.0
+Version: 0.0.1
+Imports:
+    filelock,
+    future,
+    jsonlite,
+    httpuv,
+    R6
+Suggests:
+    bench,
+    covr,
+    devtools,
+    lintr,
+    roxygen2,
+    testthat
+RoxygenNote: 6.1.1.9000
+Collate: 
+    'Client.R'
+    'Encoder.R'
+    'HttpClient.R'
+    'StreamConnection.R'
+    'Server.R'
+    'TcpServer.R'
+    'HttpServer.R'
+    'JsonEncoder.R'
+    'JsonGzipEncoder.R'
+    'JsonRpcError.R'
+    'JsonRpcRequest.R'
+    'JsonRpcResponse.R'
+    'MmapClient.R'
+    'MmapConnection.R'
+    'MmapServer.R'
+    'Processor.R'
+    'TcpClient.R'
+    'WebSocketServer.R'

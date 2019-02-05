@@ -1,0 +1,30 @@
+language: r
+matrix:
+  include:
+
+    # R latest
+    - r: release
+
+      install:
+        - make setup
+
+      # Do linting and coverage
+      script:
+        - make lint
+        - make cover
+        - make bench
+        - make build
+
+      # Upload test coverage to codecov
+      after_success:
+        - Rscript -e "covr::codecov()"
+
+    # R previous
+    - r: oldrel
+    
+      install:
+        - make setup
+
+      # Just do testing
+      script:
+        - make test
