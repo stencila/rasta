@@ -16,10 +16,10 @@
 
 For a package to be on CRAN, all of its dependencies must also be on CRAN. For this reason, we avoid any package dependencies that are not available on CRAN.
 
-          | Server      | Client
+|         | Server      | Client
 ----------|-------------|-------------
-Mmap
-Pipe
+Mmap      |             |
+Pipe      |             |
 TCP       | `base`      | `base`
 HTTP      | `httpuv`    | `httr`
 WebSocket | `httpuv`    | no
