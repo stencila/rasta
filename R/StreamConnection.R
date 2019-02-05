@@ -8,7 +8,7 @@ StreamConnection <- R6::R6Class("StreamConnection",
     },
 
     read = function() {
-      if (is.null(private$reader)) stop('Connection has been closed')
+      if (is.null(private$reader)) stop("Connection has been closed")
       if (private$binary) {
         message_length <- readBin(private$reader, integer(), 1, endian = "big")
         if (length(message_length) == 0) return(raw())
@@ -20,7 +20,7 @@ StreamConnection <- R6::R6Class("StreamConnection",
     },
 
     write = function(message) {
-      if (is.null(private$writer)) stop('Connection has been closed')
+      if (is.null(private$writer)) stop("Connection has been closed")
       if (private$binary) {
         if (is.character(message)) message <- charToRaw(message)
         writeBin(length(message), private$writer, endian = "big")
@@ -40,17 +40,17 @@ StreamConnection <- R6::R6Class("StreamConnection",
     },
 
     close = function() {
-      if(!is.null(private$reader)) {
+      if (!is.null(private$reader)) {
         tryCatch(close(private$reader), error = identity)
         private$reader <- NULL
       }
-      if(!is.null(private$writer)) {
+      if (!is.null(private$writer)) {
         tryCatch(close(private$writer), error = identity)
         private$writer <- NULL
       }
     }
   ),
- 
+
   private = list(
     reader = NULL,
     writer = NULL,

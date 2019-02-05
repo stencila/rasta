@@ -7,7 +7,7 @@ MmapClient <- R6::R6Class("MmapClient",
 
     open = function() {
       # Create listen file path
-      private$path <- '/tmp/mmap-listen.txt'
+      private$path <- "/tmp/mmap-listen.txt"
       # Watch the listen file for new connection requests
       lock <- filelock::lock(paste0(private$path, ".lock"))
       cat(readLines(private$path, 1))

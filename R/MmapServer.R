@@ -15,7 +15,7 @@ MmapServer <- R6::R6Class("MmapServer",
 
     listen = function() {
       # Create MmapConnection to listen on
-      private$server <- MmapConnection$new(path=self$path)
+      private$server <- MmapConnection$new(path = self$path)
       lockBinding("path", self)
       # Create lock file that connecing clients will need
       # to obtain to prevent races

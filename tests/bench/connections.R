@@ -64,8 +64,7 @@ tcp <- function(payload) {
 }
 
 results <- bench::press(
-  size = seq(2, 26, 2),
-  {
+  size = seq(2, 26, 2), {
     payload <- raw(size^2)
     bench::mark(
       mmap = mmap(payload),

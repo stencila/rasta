@@ -31,7 +31,7 @@ Client <- R6::R6Class("Client",
     },
 
     receive = function(response) {
-      print(c('received response', response))
+      print(c("received response", response))
     },
 
     encode = function(request) {

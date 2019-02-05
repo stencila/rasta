@@ -10,8 +10,7 @@ roundtrip <- function(encoder, request) {
 
 results <- bench::press(
   encoder = c("JsonEncoder", "JsonGzipEncoder"),
-  request = names(requests),
-  {
+  request = names(requests), {
     encoder_instance <- get(encoder)$new()
     request_instance <- requests[[request]]
     bench::mark(
