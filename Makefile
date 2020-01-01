@@ -19,7 +19,7 @@ autotest:
 	
 # Run tests with coverage
 cover:
-	Rscript -e 'covr::package_coverage()'
+	Rscript -e 'covr::report(file="coverage/index.html")'
 
 check:
 	Rscript -e 'devtools::check()'

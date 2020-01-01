@@ -1,6 +1,7 @@
 .Rhistory
 .Rproj.user
 /.Rproj.user
+/coverage
 /man
 /rasta_*.tar.gz
 /rasta.Rcheck
