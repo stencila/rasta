@@ -8,6 +8,7 @@ test_that("stream_read_varint and stream_write_varint work", {
     seek(stream)
     expect_equal(stream_read_varint(stream), value)
   }
+  close(stream)
 })
 
 test_that("stream_read_message and stream_write_message work", {
@@ -18,6 +19,7 @@ test_that("stream_read_message and stream_write_message work", {
     seek(stream)
     expect_equal(stream_read_message(stream), message)
   }
+  close(stream)
 })
 
 test_that("can read messages from blocking streams", {
@@ -25,6 +27,7 @@ test_that("can read messages from blocking streams", {
   stream_write_message(stream, "Hello world")
   seek(stream)
   expect_equal(stream_read_message(stream), "Hello world")
+  close(stream)
 })
 
 test_that("get an error when attempting to write to stdout", {
