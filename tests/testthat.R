@@ -1,4 +1,4 @@
 library(testthat)
-library(stencilaprocessor)
+library(rasta)
 
-test_check("stencilaprocessor")
+test_check("rasta")
