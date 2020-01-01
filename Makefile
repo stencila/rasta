@@ -1,4 +1,4 @@
-all: setup lint test cover bench integ build docs
+all: lint test cover build docs
 
 # Setup the local development environment
 setup:
@@ -12,21 +12,22 @@ lint:
 # Run tests
 test:
 	Rscript -e 'devtools::test()'
+
+# Run tests automatically on file changes
+autotest:
+	Rscript -e 'testthat::auto_test_package()'
 	
 # Run tests with coverage
 cover:
 	Rscript -e 'covr::package_coverage()'
-	
-# Run benchmarks
-bench: install
-	cd tests/bench && \
-	Rscript connections.R && \
-	Rscript encoders.R
+
+check:
+	Rscript -e 'devtools::check()'
 
 # Build package
 build:
-	R CMD build . && R CMD check *.tar.gz
-.PHONY: build
+	Rscript -e 'devtools::document(); warnings()'
+	Rscript -e 'devtools::build()'
 
 # Generate documentation
 docs:
@@ -36,6 +37,10 @@ docs:
 install: docs
 	Rscript -e 'devtools::install()'
 
+# Register Rasta as a Stencila executor
+register: install
+	Rscript -e 'rasta::register()'
+
 # Clean up local development environment
 clean:
-	rm -rf stencilaprocessor_*.tar.gz stencilaprocessor.Rcheck
+	rm -rf rasta_*.tar.gz rasta.Rcheck

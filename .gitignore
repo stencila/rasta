@@ -1,4 +1,6 @@
+.Rhistory
+.Rproj.user
 /.Rproj.user
 /man
-/stencilaprocessor_*.tar.gz
-/stencilaprocessor.Rcheck
+/rasta_*.tar.gz
+/rasta.Rcheck

@@ -1,3 +1,5 @@
 .lintr
+.travis.yml
 ^.*\.Rproj$
 ^\.Rproj\.user$
+Makefile

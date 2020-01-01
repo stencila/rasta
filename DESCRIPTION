@@ -1,42 +1,21 @@
-Package: stencilaprocessor
+Package: rasta
 Type: Package
-Title: A stencil Processor class
-Description: A R package implementing a stencil Processor class.
+Title: R interpreter for Stencila executable documents
+Description:
+    Implements the compile and execute methods of the Stencila Executor interface allowing it
+    to be used to on CodeChunks, and other documents nodes, using R.
 Authors@R: c(person("Nokome", "Bentley", email = "nokome@stenci.la", role = c("aut", "cre")))
-URL: https://github.com/stencila/r-processor#readme
-BugReports: https://github.com/stencila/r-processor/issues
-License: Apache-2.0
+URL: https://github.com/stencila/rasta#readme
+BugReports: https://github.com/stencila/rasta/issues
+License: File LICENSE
 Version: 0.0.1
 Imports:
-    filelock,
-    future,
     jsonlite,
-    httpuv,
     R6
 Suggests:
-    bench,
     covr,
     devtools,
     lintr,
     roxygen2,
     testthat
-RoxygenNote: 6.1.1.9000
-Collate: 
-    'Client.R'
-    'Encoder.R'
-    'HttpClient.R'
-    'StreamConnection.R'
-    'Server.R'
-    'TcpServer.R'
-    'HttpServer.R'
-    'JsonEncoder.R'
-    'JsonGzipEncoder.R'
-    'JsonRpcError.R'
-    'JsonRpcRequest.R'
-    'JsonRpcResponse.R'
-    'MmapClient.R'
-    'MmapConnection.R'
-    'MmapServer.R'
-    'Processor.R'
-    'TcpClient.R'
-    'WebSocketServer.R'
+RoxygenNote: 7.0.2.9000
