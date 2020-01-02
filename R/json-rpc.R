@@ -1,3 +1,5 @@
+#' @include util.R
+
 #' Classes for JSON-RPC 2.0
 #'
 #' These classes implement the three key object
@@ -18,9 +20,6 @@ NULL
 JsonRpcRequest <- R6::R6Class(
   "JsonRpcRequest",
   public = list(
-    #' @field jsonrpc JSON-RPC standard version identifier
-    jsonrpc = "2.0",
-
     #' @field id Unique id of the request
     id = NULL,
 
@@ -36,10 +35,26 @@ JsonRpcRequest <- R6::R6Class(
     #' @param params List of parameters
     #' @param id Unique id of the request
     initialize = function(method=NULL, params=NULL, id=NULL) {
-      self$jsonrpc <- "2.0"
       self$id <- id
       self$method <- method
       self$params <- params
+    },
+
+    #' @description Dehydrate the request to a `list`
+    dehydrate = function() {
+      filter(list(
+        jsonrpc = "2.0",
+        id = self$id,
+        method = self$method,
+        params = self$params
+      ), negate(is.null))
+    },
+  
+    #' @description Serialize the request to JSON
+    serialize = function() {
+      as.character(
+        jsonlite::toJSON(self$dehydrate(), auto_unbox = TRUE)
+      )
     }
   )
 )
@@ -107,9 +122,6 @@ JsonRpcRequest$hydrate <- function(list) {
 JsonRpcResponse <- R6::R6Class(
   "JsonRpcResponse",
   public = list(
-    #' @field jsonrpc JSON-RPC standard version identifier
-    jsonrpc = "2.0",
-
     #' @field id Id of the request that this response is for
     id = NULL,
 
@@ -125,10 +137,26 @@ JsonRpcResponse <- R6::R6Class(
     #' @param result Result of the call
     #' @param error Error associated with the call
     initialize = function(id=NULL, result=NULL, error=NULL) {
-      self$jsonrpc <- "2.0"
       self$id <- id
       self$result <- result
       self$error <- error
+    },
+
+    #' @description Dehydrate the response to a `list`
+    dehydrate = function() {
+      filter(list(
+        jsonrpc = "2.0",
+        id = self$id,
+        result = self$result,
+        error = if (!is.null(self$error)) self$error$dehydrate() else NULL
+      ), negate(is.null))
+    },
+  
+    #' @description Serialize the response to JSON
+    serialize = function() {
+      as.character(
+        jsonlite::toJSON(self$dehydrate(), auto_unbox = TRUE)
+      )
     }
   )
 )
@@ -156,6 +184,15 @@ JsonRpcError <- R6::R6Class(
       self$code <- code
       self$message <- message
       self$data <- data
+    },
+
+    #' @description Dehydrate the error to a `list`
+    dehydrate = function() {
+      filter(list(
+        code = self$code,
+        message = self$message,
+        data = self$data
+      ), negate(is.null))
     }
   )
 )
