@@ -16,8 +16,12 @@ test_that("register() writes a manifest file", {
 test_that("start() and stop() do not error", {
   # This test does not use the default StdioServer
   # because that blocks waiting for stdin input.
-  # So just check here with an empty list
-  interpreter <- Interpreter$new(servers = list())
+  interpreter <- Interpreter$new(servers = list(
+    StreamServer$new(
+      incoming = file("stdin", "rb", blocking= FALSE),
+      outgoing = file(tempfile(), "wb")
+    )
+  ))
   expect_null(interpreter$start())
   expect_null(interpreter$stop())
 })

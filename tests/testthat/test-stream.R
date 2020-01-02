@@ -1,7 +1,7 @@
 context("stream")
 
 test_that("stream_read_varint and stream_write_varint work", {
-  stream <- file("testbin", "w+b")
+  stream <- file(tempfile(), "w+b")
   for (value in c(0, 1, 42, 100, 123456, .Machine$integer.max)) {
     seek(stream)
     stream_write_varint(stream, value)
@@ -12,7 +12,7 @@ test_that("stream_read_varint and stream_write_varint work", {
 })
 
 test_that("stream_read_message and stream_write_message work", {
-  stream <- file("testbin", "w+b")
+  stream <- file(tempfile(), "w+b")
   for (message in c("Hello world", "1", "[1,2,3]")) {
     seek(stream)
     stream_write_message(stream, message)
@@ -23,10 +23,16 @@ test_that("stream_read_message and stream_write_message work", {
 })
 
 test_that("can read messages from blocking streams", {
-  stream <- file("testbin", "w+b", blocking = TRUE)
+  stream <- file(tempfile(), "w+b", blocking = TRUE)
   stream_write_message(stream, "Hello world")
   seek(stream)
   expect_equal(stream_read_message(stream), "Hello world")
+  close(stream)
+})
+
+test_that("can read messages from non-blocking streams with no message", {
+  stream <- file(tempfile(), "w+b")
+  expect_null(stream_read_message(stream))
   close(stream)
 })
 

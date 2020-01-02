@@ -14,13 +14,18 @@ log <- logger("rasta:interpreter")
 #' other languages.
 Interpreter <- R6::R6Class(
   "Interpreter",
+  private = list(
+    servers = list()
+  ),
   public = list(
+    #' @description Initialize an `Interpreter` instance
+    #'
+    #' @param servers List of servers for the interpreter
     initialize = function(servers = list(StdioServer$new())) {
       private$servers <- servers
     },
 
-    #' @description
-    #' Get the manifest for the interpreter.
+    #' @description Get the manifest for the interpreter.
     #'
     #' @details
     #' The manifest describes the capabilities and addresses of
@@ -53,8 +58,7 @@ Interpreter <- R6::R6Class(
       )
     },
 
-    #' @description
-    #' Register this interpreter on this machine.
+    #' @description Register this interpreter on this machine.
     #'
     #' @details
     #' Creates a manifest file for the interpreter so that
@@ -71,21 +75,14 @@ Interpreter <- R6::R6Class(
       )
     },
 
-    #' @description
-    #' Start serving the interpreter
+    #' @description Start serving the interpreter
     start = function() {
       for (server in private$servers) server$start(self)
     },
 
-    #' @description
-    #' Stop serving the interpreter
+    #' @description Stop serving the interpreter
     stop = function() {
       for (server in private$servers) server$stop()
     }
-  ),
-
-  private = list(
-    #' @field List of servers for the interpreter
-    servers = list()
   )
 )

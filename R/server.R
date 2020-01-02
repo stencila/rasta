@@ -9,14 +9,22 @@ log <- logger("rasta:server")
 #' each communicate with clients over alternative transports (e.g. stdio, HTTP).
 #'
 #' R implementation of the
-#' [`Executa.Server`](https://github.com/stencila/executa/blob/v1.4.0/src/base/Server.ts)
+#' [`Executa.Server`](https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts)
 #' interface.
 Server <- R6::R6Class(
   "Server",
+  private = list(
+    executor = NULL
+  ),
   public = list(
+    #' @description Initialize the server.
+    #'
+    #' @param executor The executor to serve
+    initialize = function(executor = NULL) {
+      private$executor <- executor
+    },
 
-    #' @description
-    #' Get the addresses of this server.
+    #' @description Get the addresses of the server.
     #'
     #' @details
     #' A server will usually on have one address type (e.g. `stdio` or `http`)
@@ -27,8 +35,7 @@ Server <- R6::R6Class(
       list()
     },
 
-    #' @description
-    #' Get the URL of the server.
+    #' @description Get the URL of the server.
     #'
     #' @details
     #' The URL is derived from the first address.
@@ -44,8 +51,7 @@ Server <- R6::R6Class(
       }
     },
 
-    #' @description
-    #' Receive a request.
+    #' @description Receive a request.
     #'
     #' @param request The `JsonRpcRequest` to receive.
     #' @return A `JsonRpcResponse`.
@@ -58,10 +64,10 @@ Server <- R6::R6Class(
       handle <- function() {
         request <- JsonRpcRequest$create(request)
         id <- request$id
-        
+
         if (inherits(request, "JsonRpcError")) return(request)
         if (is.null(private$executor)) stop("No executor configured yet for this server")
-        
+
         private$executor$dispatch(request$method, request$params)
       }
       result <- tryCatch(handle(), error = identity)
@@ -79,8 +85,7 @@ Server <- R6::R6Class(
       JsonRpcResponse$new(id, result, error)
     },
 
-    #' @description
-    #' Start the server.
+    #' @description Start the server.
     #'
     #' @details
     #' When overriding this method, derived classes should
@@ -92,8 +97,7 @@ Server <- R6::R6Class(
       private$executor <- executor
     },
 
-    #' @description
-    #' Stop the server
+    #' @description Stop the server
     #'
     #' @details
     #' Derived classes may override this method to gracefully
@@ -101,10 +105,5 @@ Server <- R6::R6Class(
     stop = function() {
       log$debug(paste("Stopping server:", self$url()))
     }
-  ),
-
-  private = list(
-    #' @field The executor that this server dispatches to
-    executor = NULL
   )
 )

@@ -6,7 +6,9 @@
 #' For the equivalent classes in Typescript, and further documentation, see Executa.
 #' e.g. [`JsonRpcRequest`](https://github.com/stencila/executa/blob/v1.6.0/src/base/JsonRpcRequest.ts)
 #'
+#' @name json-rpc
 #' @rdname json-rpc.Rd
+NULL
 
 #' A JSON-RPC 2.0 request
 #'
@@ -14,11 +16,23 @@
 JsonRpcRequest <- R6::R6Class(
   "JsonRpcRequest",
   public = list(
-    jsonrpc = NULL,
+    #' @field jsonrpc JSON-RPC standard version identifier
+    jsonrpc = "2.0",
+
+    #' @field id Unique id of the request
     id = NULL,
+
+    #' @field method Name of the method
     method = NULL,
+
+    #' @field params List of parameters
     params = NULL,
 
+    #' @description Initialize a JSON-RPC request
+    #'
+    #' @param method Name of the method
+    #' @param params List of parameters
+    #' @param id Unique id of the request
     initialize = function(method=NULL, params=NULL, id=NULL) {
       self$jsonrpc <- "2.0"
       self$id <- id
@@ -33,6 +47,7 @@ JsonRpcRequest <- R6::R6Class(
 #' Calls `JsonRpcRequest$parse` or `JsonRpcRequest$hydrate` depending
 #' on the type of the `source` argument.
 #'
+#' @name JsonRpcRequest$create
 #' @rdname json-rpc.Rd
 #' @param source A JSON string or list with the request fields
 JsonRpcRequest$create <- function(source) {
@@ -50,6 +65,7 @@ JsonRpcRequest$create <- function(source) {
 #' Will return an error with the code `ParseError`
 #' if the JSON can not be parsed.
 #'
+#' @name JsonRpcRequest$parse
 #' @rdname json-rpc.Rd
 #' @param json The JSON to parse
 JsonRpcRequest$parse <- function(json) {
@@ -68,6 +84,7 @@ JsonRpcRequest$parse <- function(json) {
 #' if required fields are missing or are of the
 #' wrong type.
 #'
+#' @name JsonRpcRequest$hydrate
 #' @rdname json-rpc.Rd
 #' @param json The list to use
 JsonRpcRequest$hydrate <- function(list) {
@@ -92,11 +109,23 @@ JsonRpcRequest$hydrate <- function(list) {
 JsonRpcResponse <- R6::R6Class(
   "JsonRpcResponse",
   public = list(
-    jsonrpc = NULL,
+    #' @field jsonrpc JSON-RPC standard version identifier
+    jsonrpc = "2.0",
+
+    #' @field id Id of the request that this response is for
     id = NULL,
+
+    #' @field result Result of the call
     result = NULL,
+
+    #' @field error Error associated with the call
     error = NULL,
 
+    #' @description Initialize a JSON-RPC response
+    #'
+    #' @param id Id of the request that this response is for
+    #' @param result Result of the call
+    #' @param error Error associated with the call
     initialize = function(id=NULL, result=NULL, error=NULL) {
       self$jsonrpc <- "2.0"
       self$id <- id
@@ -112,10 +141,20 @@ JsonRpcResponse <- R6::R6Class(
 JsonRpcError <- R6::R6Class(
   "JsonRpcError",
   public = list(
+    #' @field code Numeric JSON-RPC error code
     code = NULL,
+
+    #' @field message Message for the error
     message = NULL,
+
+    #' @field data Any additional data associated with the error
     data = NULL,
 
+    #' @description Initialize a JSON-RPC error
+    #'
+    #' @param code Numeric JSON-RPC error code
+    #' @param message Message for the error
+    #' @param data Any additional data associated with the error
     initialize = function(code=NULL, message=NULL, data=NULL) {
       self$code <- code
       self$message <- message
@@ -125,29 +164,31 @@ JsonRpcError <- R6::R6Class(
 )
 
 #' Error codes defined in JSON-RPC 2.0
+#'
+#' @rdname json-rpc.Rd
 JsonRpcErrorCode <- list(
 
-  #' Invalid JSON was received by the server.
-  #' An error occurred on the server while parsing the JSON text.
+  # Invalid JSON was received by the server.
+  # An error occurred on the server while parsing the JSON text.
   ParseError = -32700,
 
-  #' The JSON sent is not a valid Request object.
+  # The JSON sent is not a valid Request object.
   InvalidRequest = -32600,
 
-  #' The method does not exist / is not available.
+  # The method does not exist / is not available.
   MethodNotFound = -32601,
 
-  #' Invalid method parameter(s).
+  # Invalid method parameter(s).
   InvalidParams = -32602,
 
-  #' Internal JSON-RPC error.
+  # Internal JSON-RPC error.
   InternalError = -32603,
 
   # Implementation defined server-errors...
 
-  #' Generic server error.
+  # Generic server error.
   ServerError = -32000,
 
-  #' Capability error
+  # Capability error
   CapabilityError = -32005
 )

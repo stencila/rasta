@@ -7,7 +7,7 @@ Description:
 Authors@R: c(person("Nokome", "Bentley", email = "nokome@stenci.la", role = c("aut", "cre")))
 URL: https://github.com/stencila/rasta#readme
 BugReports: https://github.com/stencila/rasta/issues
-License: File LICENSE
+License: file LICENSE
 Version: 0.0.1
 Imports:
     jsonlite,
@@ -18,4 +18,15 @@ Suggests:
     lintr,
     roxygen2,
     testthat
+Encoding: UTF-8
 RoxygenNote: 7.0.2.9000
+Collate: 
+    'home.R'
+    'logger.R'
+    'stream.R'
+    'server.R'
+    'stream-server.R'
+    'stdio-server.R'
+    'interpreter.R'
+    'json-rpc.R'
+    'main.R'

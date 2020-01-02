@@ -6,6 +6,7 @@
 #' Essentially it implements the functionality in the Node.js package
 #' [`length-prefixed-stream`](https://www.npmjs.com/package/length-prefixed-stream).
 #'
+#' @name stream
 #' @rdname stream.Rd
 NULL
 
@@ -13,9 +14,11 @@ NULL
 #'
 #' @rdname stream.Rd
 #' @param stream The stream to read from
+#' @returns The message as a a string, or NULL if no message could be read
 stream_read_message <- function(stream) {
     message_length <- stream_read_varint(stream)
-    bytes <- if (message_length > 0) readBin(stream, raw(), n = message_length, size = 1) else raw()
+    if (message_length == 0) return(NULL)
+    bytes <- readBin(stream, raw(), n = message_length, size = 1)
     rawToChar(bytes)
 }
 
@@ -46,6 +49,7 @@ stream_read_varint <- function(stream) {
     shift <- as.integer(0)
     while (TRUE) {
         byte <- readBin(stream, raw(), n = 1, size = 1)
+        if (length(byte) == 0) break
         int <- as.integer(byte)
         result <- result + bitwShiftL(bitwAnd(int, rest), shift)
         shift <- shift + 7
@@ -62,7 +66,7 @@ stream_read_varint <- function(stream) {
 stream_write_varint <- function(stream, value) {
     # Implementation based on https://github.com/chrisdickinson/varint/blob/30e24d4/encode.js
     while (bitwAnd(value, msb_all
-)) {
+    )) {
         int <- bitwOr(bitwAnd(value, 0xFF), msb)
         byte <- as.raw(int)
         writeBin(byte, stream, useBytes = TRUE)
