@@ -1,31 +1,28 @@
 language: r
+
+r:
+  - oldrel
+  - release
+  - devel
+
+r_github_packages:
+  - r-lib/covr
+  - r-lib/pkgdown
+
 cache: packages
-matrix:
-  include:
 
-    # R latest
-    - r: release
+warnings_are_errors: false
 
-      install:
-        - make setup
+after_success:
+  - Rscript -e 'covr::codecov()'
+  - make docs
 
-      # Do linting and coverage
-      script:
-        - make lint
-        - make cover
-        - make bench
-        - make build
-
-      # Upload test coverage to codecov
-      after_success:
-        - Rscript -e "covr::codecov()"
-
-    # R previous
-    - r: oldrel
-    
-      install:
-        - make setup
-
-      # Just do testing
-      script:
-        - make test
+deploy:
+  # Deploy documentation to Github Pages
+  # See https://docs.travis-ci.com/user/deployment/pages/
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: docs
+  on:
+    branch: master
