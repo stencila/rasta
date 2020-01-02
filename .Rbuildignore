@@ -1,5 +1,8 @@
+_pkgdown.yml
 .lintr
 .travis.yml
-^.*\.Rproj$
-^\.Rproj\.user$
+.vscode
+coverage
+docs
 Makefile
+rasta.Rproj
