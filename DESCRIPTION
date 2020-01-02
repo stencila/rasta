@@ -32,3 +32,4 @@ Collate:
     'stdio-server.R'
     'interpreter.R'
     'main.R'
+    'util.R'

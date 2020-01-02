@@ -6,3 +6,5 @@ coverage
 docs
 Makefile
 rasta.Rproj
+^.*\.Rproj$
+^\.Rproj\.user$
