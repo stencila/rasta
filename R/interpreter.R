@@ -5,13 +5,13 @@
 log <- logger("rasta:interpreter")
 
 #' @title Interpreter
-#' 
+#'
 #' @description
 #' This class is an interpreter for node in executable documents that contain R code.
 #' It implements the `compile`, `execute`, and other core methods of Executa's
 #' [Executor](https://github.com/stencila/executa/blob/v1.6.0/src/base/Executor.ts)
 #' interface.
-#' 
+#'
 #' See [Pyla](https://github.com/stencila/pyla) and [Basha](https://github.com/stencila/basha)
 #' for examples of implementations of interpreters for other languages, in other languages.
 Interpreter <- R6::R6Class(

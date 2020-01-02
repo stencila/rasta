@@ -19,6 +19,12 @@ test_that("receive() returns a response", {
   expect_equal(error$code, JsonRpcErrorCode$ParseError)
   expect_match(error$message, "Parse error: lexical error: invalid char in json text")
 
+  response <- server$receive("{}")
+  expect_true(inherits(response, "JsonRpcResponse"))
+  error <- response$error
+  expect_equal(error$code, JsonRpcErrorCode$InvalidRequest)
+  expect_equal(error$message, "Invalid request: missing property: \"method\"")
+
   response <- server$receive(list(
     method = "some_method"
   ))

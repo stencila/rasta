@@ -81,6 +81,7 @@ Server <- R6::R6Class(
         log$error(message)
         error <- JsonRpcError$new(JsonRpcErrorCode$ServerError, message)
       }
+      if (!is.null(error)) result <- NULL
 
       JsonRpcResponse$new(id, result, error)
     },

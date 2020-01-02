@@ -5,7 +5,7 @@
 # particular Javascript / Typescript.
 
 # The following higher order functions provide a
-# familiar functional API (with lowercase naming convention) 
+# familiar functional API (with lowercase naming convention)
 # without depending on `purrr` or similar.
 
 #' Negate a function

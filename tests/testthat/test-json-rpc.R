@@ -60,11 +60,11 @@ test_that("can dehydrate() a request to a list", {
 
 test_that("can serialize() a request to JSON", {
   expect_equal(
-    JsonRpcRequest$new(method = 'manifest')$serialize(),
+    JsonRpcRequest$new(method = "manifest")$serialize(),
     "{\"jsonrpc\":\"2.0\",\"method\":\"manifest\"}"
   )
   expect_equal(
-    JsonRpcRequest$new(method = 'execute', params = list(node = 42))$serialize(),
+    JsonRpcRequest$new(method = "execute", params = list(node = 42))$serialize(),
     "{\"jsonrpc\":\"2.0\",\"method\":\"execute\",\"params\":{\"node\":42}}"
   )
 })

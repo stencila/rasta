@@ -58,6 +58,7 @@ reference:
     contents:
       - home
       - logger
+      - negate
       - filter
       - map
       - transform

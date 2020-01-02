@@ -4,7 +4,7 @@
 log <- logger("rasta:stdio:server")
 
 #' @title StdioServer
-#' 
+#'
 #' @description
 #' Server that uses standard input and output streams for message transport.
 #'

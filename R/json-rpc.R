@@ -1,5 +1,3 @@
-#' @include util.R
-
 #' Classes for JSON-RPC 2.0
 #'
 #' These classes implement the three key object
@@ -10,9 +8,10 @@
 #' - [`JsonRpcRequest`]
 #' - [`JsonRpcResponse`]
 #' - [`JsonRpcError`]
-#' 
+#'
 #' @name json-rpc
 #' @rdname json-rpc
+#' @include util.R
 NULL
 
 #' @title JSON-RPC request
@@ -49,7 +48,7 @@ JsonRpcRequest <- R6::R6Class(
         params = self$params
       ), negate(is.null))
     },
-  
+
     #' @description Serialize the request to JSON
     serialize = function() {
       as.character(
@@ -151,7 +150,7 @@ JsonRpcResponse <- R6::R6Class(
         error = if (!is.null(self$error)) self$error$dehydrate() else NULL
       ), negate(is.null))
     },
-  
+
     #' @description Serialize the response to JSON
     serialize = function() {
       as.character(
@@ -160,6 +159,39 @@ JsonRpcResponse <- R6::R6Class(
     }
   )
 )
+
+#' Create a JSON-RPC response.
+#'
+#' Calls `JsonRpcResponse$parse` or `JsonRpcResponse$hydrate` depending
+#' on the type of the `source` argument.
+#'
+#' @name JsonRpcResponse$create
+#' @param source A JSON string or list with the response fields
+JsonRpcResponse$create <- function(source) {
+  if (inherits(source, "JsonRpcResponse")) source
+  else if (is.character(source)) JsonRpcResponse$parse(source)
+  else if (is.list(source)) JsonRpcResponse$hydrate(source)
+  else stop(paste("Invalid response type:", typeof(source)))
+}
+
+#' Parse JSON into a JSON-RPC response
+#'
+#' Will return an error with the code `ParseError`
+#' if the JSON can not be parsed.
+#'
+#' @name JsonRpcResponse$parse
+#' @param json The JSON to parse
+JsonRpcResponse$parse <- function(json) {
+  JsonRpcResponse$create(jsonlite::fromJSON(json))
+}
+
+#' Hydrate a list into a JSON-RPC response.
+#'
+#' @name JsonRpcResponse$hydrate
+#' @param list The list to use
+JsonRpcResponse$hydrate <- function(list) {
+  JsonRpcResponse$new(list$id, list$result, list$error)
+}
 
 #' @title JSON-RPC error
 #' @description A class representing a JSON-RPC 2.0 error object.

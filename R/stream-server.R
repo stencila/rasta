@@ -6,7 +6,7 @@ log <- logger("rasta:stream:server")
 error_file <- tempfile(pattern = "rasta-stream-server-", fileext = ".txt")
 
 #' @title StreamServer
-#' 
+#'
 #' @description
 #' Server that uses streams as message transport.
 #' For an equivalent class implemented in Node.js see Executa's
@@ -59,9 +59,10 @@ StreamServer <- R6::R6Class(
         # Handle requests, logging any unhandled errors or warnings
         tryCatch({
             message <- stream_read_message(private$incoming)
-            if (!is.null(message)) {
+            if (!is.null(message) && message != "") {
               response <- self$receive(message)
-              stream_write_message(private$outgoing, response)
+              json <- response$serialize()
+              stream_write_message(private$outgoing, json)
             } else {
               break
             }

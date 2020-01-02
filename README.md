@@ -53,12 +53,7 @@ Clean                                                   | `make clean`          
 
 ### Testing
 
-Unit tests live in the `tests` folder and are written using `testthat`. To run test files individually, in R use `test_file`:
-
-```r
-library(testthat)
-testthat::test_file(system.file("tests/testthat/test-r-context.R",package="stencila"))
-```
+Unit tests live in the `tests` folder and are written using `testthat`.
 
 ### Documentation
 
