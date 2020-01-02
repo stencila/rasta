@@ -5,24 +5,26 @@ r:
   - release
   - devel
 
-r_github_packages:
-  - r-lib/covr
-  - r-lib/pkgdown
-
 cache: packages
 
 warnings_are_errors: false
 
-after_success:
-  - Rscript -e 'covr::codecov()'
-  - make docs
-
-deploy:
-  # Deploy documentation to Github Pages
-  # See https://docs.travis-ci.com/user/deployment/pages/
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN
-  local-dir: docs
-  on:
-    branch: master
+# Deploy documentation, and upload code coverage
+# using the current release version of R
+jobs:
+  include:
+    - stage: deploy
+      r: release
+      r_github_packages:
+        - r-lib/covr
+        - r-lib/pkgdown
+      script:
+        - make docs
+        - Rscript -e 'covr::codecov()'
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN
+        local-dir: docs
+        on:
+          branch: master
