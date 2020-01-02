@@ -8,6 +8,12 @@ test_that("manifest() returns a list with a Manifest interface", {
   expect_true(manifest$capabilities$manifest)
 })
 
+test_that("dispatch() works", {
+  interpreter <- Interpreter$new()
+  manifest <- interpreter$dispatch("manifest")
+  expect_equal(manifest, interpreter$manifest())
+})
+
 test_that("register() writes a manifest file", {
   interpreter <- Interpreter$new()
   expect_null(interpreter$register())

@@ -59,6 +59,16 @@ Interpreter <- R6::R6Class(
       )
     },
 
+    #' @description Dispatch a call to one of the interpreter's
+    #' methods
+    #'
+    #' @param method The name of the method
+    #' @param params A list of parameter values (i.e. arguments)
+    dispatch = function(method, params = NULL) {
+      if (is.null(params)) params <- list()
+      do.call(self[[method]], params)
+    },
+
     #' @description Register this interpreter on this machine.
     #'
     #' Creates a manifest file for the interpreter so that
