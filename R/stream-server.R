@@ -5,8 +5,10 @@
 log <- logger("rasta:stream:server")
 error_file <- tempfile(pattern = "rasta-stream-server-", fileext = ".txt")
 
+#' @title StreamServer
+#' 
+#' @description
 #' Server that uses streams as message transport.
-#'
 #' For an equivalent class implemented in Node.js see Executa's
 #' [`StreamServer`](https://github.com/stencila/executa/blob/v1.6.0/src/stream/StreamServer.ts).
 StreamServer <- R6::R6Class(
@@ -29,8 +31,6 @@ StreamServer <- R6::R6Class(
     },
 
     #' @description Start the server.
-    #'
-    #' @details
     #' Override of `Server$start` that starts the server
     #' listening for requests on the incoming stream and
     #' sending them on the outgoing stream.
@@ -85,8 +85,6 @@ StreamServer <- R6::R6Class(
     },
 
     #' @description Stop the server.
-    #'
-    #' @details
     #' Override of `Server$stop` to close incoming and outgoing
     #' streams.
     stop = function() {

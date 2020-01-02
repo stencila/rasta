@@ -16,12 +16,13 @@ navbar:
 reference:
   - title: Main
     desc: Main entry point functions.
-    contents: 
+    contents:
+      - register
       - start
 
   - title: Interpreter
     desc: |
-      An interpreter for executable document nodes containing R code.
+      An interpreter for nodes in executable documents that contain R code.
     contents:
       - Interpreter
 
@@ -35,14 +36,25 @@ reference:
       - StdioServer
 
   - title: JSON-RPC
-    desc: Classes implementing the JSON-RPC 2.0 specification.
+    desc: |
+      Classes implementing the JSON-RPC 2.0 specification for remote
+      procedure calls.
     contents:
       - json-rpc
-      - starts_with("JsonRpc")    
+      - starts_with("JsonRpcRequest") 
+      - starts_with("JsonRpcResponse")
+      - starts_with("JsonRpcError")
+      
+  - title: Message streams
+    desc: |
+      Functions for reading and writing length prefixed messages to and
+      from streams.
+    contents:
+      - stream
+      - starts_with("stream") 
 
   - title: Other
     desc: Other utility functions.
     contents:
       - home
       - logger
-      - starts_with("stream")

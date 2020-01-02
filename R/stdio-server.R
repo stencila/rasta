@@ -3,6 +3,9 @@
 
 log <- logger("rasta:stdio:server")
 
+#' @title StdioServer
+#' 
+#' @description
 #' Server that uses standard input and output streams for message transport.
 #'
 #' For an equivalent class implemented in Node.js see Executa's
@@ -15,15 +18,13 @@ StdioServer <- R6::R6Class(
     address = "R --slave --vanilla -e 'rasta::start()'",
 
     #' @description Get a list of server addresses
-    #'
-    #' @details Override of `Server$addresses`.
+    #' Override of `Server$addresses`.
     addresses = function() {
       list("stdio" = self$address)
     },
 
     #' @description Start the server.
-    #'
-    #' @details Override of `StreamServer$start` that initializes
+    #' Override of `StreamServer$start` that initializes
     #' incoming and outgoing streams to use `stdin` and `stdout`
     #' respectively.
     #'

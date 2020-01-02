@@ -4,14 +4,16 @@
 
 log <- logger("rasta:interpreter")
 
-#' Interpreter
-#'
-#' An interpreter for nodes in executable documents that contain R code.
-#'
-#' Implements the `compile`, `execute`, and other core methods of the
-#' [`Executa.Executor`](https://github.com/stencila/executa/blob/v1.6.0/src/base/Executor.ts)
-#' interface. See Pyla and Basha for examples of implementations of interpreters for
-#' other languages.
+#' @title Interpreter
+#' 
+#' @description
+#' This class is an interpreter for node in executable documents that contain R code.
+#' It implements the `compile`, `execute`, and other core methods of Executa's
+#' [Executor](https://github.com/stencila/executa/blob/v1.6.0/src/base/Executor.ts)
+#' interface.
+#' 
+#' See [Pyla](https://github.com/stencila/pyla) and [Basha](https://github.com/stencila/basha)
+#' for examples of implementations of interpreters for other languages, in other languages.
 Interpreter <- R6::R6Class(
   "Interpreter",
   private = list(
@@ -27,7 +29,6 @@ Interpreter <- R6::R6Class(
 
     #' @description Get the manifest for the interpreter.
     #'
-    #' @details
     #' The manifest describes the capabilities and addresses of
     #' an executor so that peers know how to delegate method calls
     #' to this interpreter.
@@ -60,7 +61,6 @@ Interpreter <- R6::R6Class(
 
     #' @description Register this interpreter on this machine.
     #'
-    #' @details
     #' Creates a manifest file for the interpreter so that
     #' it can be used as a peer by other executors.
     register = function() {

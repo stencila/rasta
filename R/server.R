@@ -1,15 +1,17 @@
+#' @include json-rpc.R
 #' @include logger.R
 
 log <- logger("rasta:server")
 
-#' Server
+#' @title Server
 #'
+#' @description
 #' A server is responsible for receiving requests to call an executor
 #' method. This is an abstract base class for concreate classes of servers that will
 #' each communicate with clients over alternative transports (e.g. stdio, HTTP).
 #'
-#' R implementation of the
-#' [`Executa.Server`](https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts)
+#' R implementation of Executa's
+#' [Server](https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts)
 #' interface.
 Server <- R6::R6Class(
   "Server",
@@ -26,7 +28,6 @@ Server <- R6::R6Class(
 
     #' @description Get the addresses of the server.
     #'
-    #' @details
     #' A server will usually on have one address type (e.g. `stdio` or `http`)
     #' but may have more than one address for each type.
     #'
@@ -37,7 +38,6 @@ Server <- R6::R6Class(
 
     #' @description Get the URL of the server.
     #'
-    #' @details
     #' The URL is derived from the first address.
     #' Intended mainly for easily adding the address of the
     #' server to log messages
@@ -87,7 +87,6 @@ Server <- R6::R6Class(
 
     #' @description Start the server.
     #'
-    #' @details
     #' When overriding this method, derived classes should
     #' call this method, or ensure that `executor` is set themselves.
     #'
@@ -99,7 +98,6 @@ Server <- R6::R6Class(
 
     #' @description Stop the server
     #'
-    #' @details
     #' Derived classes may override this method to gracefully
     #' shutdown the server e.g. close client connections.
     stop = function() {

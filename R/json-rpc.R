@@ -2,15 +2,19 @@
 #'
 #' These classes implement the three key object
 #' types of the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification).
-#'
 #' For the equivalent classes in Typescript, and further documentation, see Executa.
 #' e.g. [`JsonRpcRequest`](https://github.com/stencila/executa/blob/v1.6.0/src/base/JsonRpcRequest.ts)
 #'
+#' - [`JsonRpcRequest`]
+#' - [`JsonRpcResponse`]
+#' - [`JsonRpcError`]
+#' 
 #' @name json-rpc
 #' @rdname json-rpc
 NULL
 
-#' A JSON-RPC 2.0 request
+#' @title JSON-RPC request
+#' @description A class representing a JSON-RPC 2.0 request object.
 JsonRpcRequest <- R6::R6Class(
   "JsonRpcRequest",
   public = list(
@@ -98,7 +102,8 @@ JsonRpcRequest$hydrate <- function(list) {
     JsonRpcRequest$new(method, list$params, list$id)
 }
 
-#' A JSON-RPC 2.0 response
+#' @title JSON-RPC response
+#' @description A class representing a JSON-RPC 2.0 response object.
 JsonRpcResponse <- R6::R6Class(
   "JsonRpcResponse",
   public = list(
@@ -128,7 +133,8 @@ JsonRpcResponse <- R6::R6Class(
   )
 )
 
-#' A JSON-RPC 2.0 error
+#' @title JSON-RPC error
+#' @description A class representing a JSON-RPC 2.0 error object.
 JsonRpcError <- R6::R6Class(
   "JsonRpcError",
   public = list(
@@ -154,7 +160,7 @@ JsonRpcError <- R6::R6Class(
   )
 )
 
-#' Error codes defined in JSON-RPC 2.0
+#' List of JSON-RPC 2.0 error codes
 JsonRpcErrorCode <- list(
 
   # Invalid JSON was received by the server.
