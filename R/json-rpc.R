@@ -36,7 +36,8 @@ JsonRpcRequest <- R6::R6Class(
 #' @rdname json-rpc.Rd
 #' @param source A JSON string or list with the request fields
 JsonRpcRequest$create <- function(source) {
-  if (is.character(source)) JsonRpcRequest$parse(source)
+  if (inherits(source, "JsonRpcRequest")) source
+  else if (is.character(source)) JsonRpcRequest$parse(source)
   else if (is.list(source)) JsonRpcRequest$hydrate(source)
   else JsonRpcError$new(
     JsonRpcErrorCode$InvalidRequest,

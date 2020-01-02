@@ -13,12 +13,18 @@ test_that("can construct a request", {
 })
 
 test_that("can create a request from a string or a list", {
-  request <- JsonRpcRequest$create(list(
+  request1 <- JsonRpcRequest$create(list(
     method = "some_method",
     params = list(a = 1, b = 2),
     id = "uniqueid"
   ))
-  expect_true(inherits(request, "JsonRpcRequest"))
+  expect_true(inherits(request1, "JsonRpcRequest"))
+
+  request2 <- JsonRpcRequest$create("{\"method\": \"some_method\"}")
+  expect_true(inherits(request2, "JsonRpcRequest"))
+
+  request3 <- JsonRpcRequest$create(request2)
+  expect_equal(request2, request3)
 
   error <- JsonRpcRequest$create(42)
   expect_true(inherits(error, "JsonRpcError"))
