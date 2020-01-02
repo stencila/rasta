@@ -1,0 +1,48 @@
+template:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  title: R interpreter for Stencila executable documents
+  left:
+    - text: Home
+      href: index.html
+    - text: Reference
+      href: reference/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/stencila/rasta
+
+reference:
+  - title: Main
+    desc: Main entry point functions.
+    contents: 
+      - start
+
+  - title: Interpreter
+    desc: |
+      An interpreter for executable document nodes containing R code.
+    contents:
+      - Interpreter
+
+  - title: Servers
+    desc: |
+      Alternative servers for providing access to an interpreter from
+      other, possibly remote, processes.
+    contents:
+      - Server
+      - StreamServer
+      - StdioServer
+
+  - title: JSON-RPC
+    desc: Classes implementing the JSON-RPC 2.0 specification.
+    contents:
+      - json-rpc
+      - starts_with("JsonRpc")    
+
+  - title: Other
+    desc: Other utility functions.
+    contents:
+      - home
+      - logger
+      - starts_with("stream")

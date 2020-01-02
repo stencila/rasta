@@ -2,6 +2,7 @@
 
 #' Register the interpreter
 #'
+#' @name register
 #' @export
 register <- function() Interpreter$new()$register() #nocov
 

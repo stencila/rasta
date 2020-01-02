@@ -7,12 +7,10 @@
 #' e.g. [`JsonRpcRequest`](https://github.com/stencila/executa/blob/v1.6.0/src/base/JsonRpcRequest.ts)
 #'
 #' @name json-rpc
-#' @rdname json-rpc.Rd
+#' @rdname json-rpc
 NULL
 
 #' A JSON-RPC 2.0 request
-#'
-#' @rdname json-rpc.Rd
 JsonRpcRequest <- R6::R6Class(
   "JsonRpcRequest",
   public = list(
@@ -48,7 +46,6 @@ JsonRpcRequest <- R6::R6Class(
 #' on the type of the `source` argument.
 #'
 #' @name JsonRpcRequest$create
-#' @rdname json-rpc.Rd
 #' @param source A JSON string or list with the request fields
 JsonRpcRequest$create <- function(source) {
   if (inherits(source, "JsonRpcRequest")) source
@@ -66,7 +63,6 @@ JsonRpcRequest$create <- function(source) {
 #' if the JSON can not be parsed.
 #'
 #' @name JsonRpcRequest$parse
-#' @rdname json-rpc.Rd
 #' @param json The JSON to parse
 JsonRpcRequest$parse <- function(json) {
   list <- tryCatch(jsonlite::fromJSON(json), error = identity)
@@ -85,8 +81,7 @@ JsonRpcRequest$parse <- function(json) {
 #' wrong type.
 #'
 #' @name JsonRpcRequest$hydrate
-#' @rdname json-rpc.Rd
-#' @param json The list to use
+#' @param list The list to use
 JsonRpcRequest$hydrate <- function(list) {
   method <- list$method
   if (is.null(method))
@@ -104,8 +99,6 @@ JsonRpcRequest$hydrate <- function(list) {
 }
 
 #' A JSON-RPC 2.0 response
-#'
-#' @rdname json-rpc.Rd
 JsonRpcResponse <- R6::R6Class(
   "JsonRpcResponse",
   public = list(
@@ -136,8 +129,6 @@ JsonRpcResponse <- R6::R6Class(
 )
 
 #' A JSON-RPC 2.0 error
-#'
-#' @rdname json-rpc.Rd
 JsonRpcError <- R6::R6Class(
   "JsonRpcError",
   public = list(
@@ -164,8 +155,6 @@ JsonRpcError <- R6::R6Class(
 )
 
 #' Error codes defined in JSON-RPC 2.0
-#'
-#' @rdname json-rpc.Rd
 JsonRpcErrorCode <- list(
 
   # Invalid JSON was received by the server.

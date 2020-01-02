@@ -3,7 +3,7 @@
 
 log <- logger("rasta:stdio:server")
 
-#' Server that uses streams as message transport.
+#' Server that uses standard input and output streams for message transport.
 #'
 #' For an equivalent class implemented in Node.js see Executa's
 #' [`StdioServer`](https://github.com/stencila/executa/blob/v1.6.0/src/stdio/StdioServer.ts).

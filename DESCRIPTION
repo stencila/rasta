@@ -16,6 +16,7 @@ Suggests:
     covr,
     devtools,
     lintr,
+    pkgdown,
     roxygen2,
     testthat
 Encoding: UTF-8

@@ -7,12 +7,11 @@
 #' [`length-prefixed-stream`](https://www.npmjs.com/package/length-prefixed-stream).
 #'
 #' @name stream
-#' @rdname stream.Rd
+#' @rdname stream
 NULL
 
 #' Read a length prefixed message from a stream
 #'
-#' @rdname stream.Rd
 #' @param stream The stream to read from
 #' @returns The message as a a string, or NULL if no message could be read
 stream_read_message <- function(stream) {
@@ -24,7 +23,6 @@ stream_read_message <- function(stream) {
 
 #' Write a length prefixed message from a stream
 #'
-#' @rdname stream.Rd
 #' @param stream The stream to write to
 #' @param message The message to write
 stream_write_message <- function(stream, message) {
@@ -40,7 +38,6 @@ msb_all <- bitwNot(rest)
 
 #' Read a `varint` from a stream
 #'
-#' @rdname stream.Rd
 #' @param stream The stream to read from
 stream_read_varint <- function(stream) {
     # Implementation based on https://github.com/chrisdickinson/varint/blob/30e24d4/decode.js
@@ -60,7 +57,6 @@ stream_read_varint <- function(stream) {
 
 #' Write a `varint` to a stream
 #'
-#' @rdname stream.Rd
 #' @param stream The stream to write to
 #' @param value The value to write
 stream_write_varint <- function(stream, value) {

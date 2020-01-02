@@ -2,6 +2,7 @@
 .Rproj.user
 /.Rproj.user
 /coverage
+/docs
 /man
 /rasta_*.tar.gz
 /rasta.Rcheck
