@@ -58,3 +58,8 @@ reference:
     contents:
       - home
       - logger
+      - filter
+      - map
+      - transform
+      - reduce
+      - starts_with("string")
