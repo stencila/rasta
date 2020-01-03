@@ -3,7 +3,7 @@ Type: Package
 Title: R interpreter for Stencila executable documents
 Description:
     Implements the compile and execute methods of the Stencila Executor interface allowing it
-    to be used to on CodeChunks, and other documents nodes, using R.
+    to be used to on CodeChunks, and other nodes in executable documents, that use R.
 Authors@R: c(person("Nokome", "Bentley", email = "nokome@stenci.la", role = c("aut", "cre")))
 URL: https://github.com/stencila/rasta#readme
 BugReports: https://github.com/stencila/rasta/issues
