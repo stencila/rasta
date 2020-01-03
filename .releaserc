@@ -4,7 +4,7 @@
     "@semantic-release/release-notes-generator",
     ["@semantic-release/changelog", {
       "changelogFile": "NEWS.md",
-      "changelogTitle": "News"
+      "changelogTitle": "# News"
     }],
     ["@semantic-release/exec", {
       "prepareCmd" : "sed -i -e 's!Version:.*$!Version: ${nextRelease.version}!g' DESCRIPTION",
