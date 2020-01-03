@@ -5,7 +5,7 @@
 #' messages using streams (e.g. standard input / output, TCP streams).
 #' Essentially it implements the functionality in the Node.js package
 #' [`length-prefixed-stream`](https://www.npmjs.com/package/length-prefixed-stream).
-#' 
+#'
 #' - [`stream_read_message`]
 #' - [`stream_write_message`]
 #' - [`stream_read_varint`]
