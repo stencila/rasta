@@ -1,8 +1,6 @@
 #' @include stream-server.R
 #' @include logger.R
-
-log <- logger("rasta:stdio:server")
-
+#'
 #' @title StdioServer
 #'
 #' @description
@@ -13,6 +11,9 @@ log <- logger("rasta:stdio:server")
 StdioServer <- R6::R6Class(
   "StdioServer",
   inherit = StreamServer,
+  private = list(
+    log = logger("rasta:stdio:server")
+  ),
   public = list(
     #' @field address The address of the server
     address = "R --slave --vanilla -e 'rasta::start()'",

@@ -1,10 +1,7 @@
 #' @include server.R
 #' @include stream.R
 #' @include logger.R
-
-log <- logger("rasta:stream:server")
-error_file <- tempfile(pattern = "rasta-stream-server-", fileext = ".txt")
-
+#'
 #' @title StreamServer
 #'
 #' @description
@@ -16,7 +13,9 @@ StreamServer <- R6::R6Class(
   inherit = Server,
   private = list(
     incoming = NULL,
-    outgoing = NULL
+    outgoing = NULL,
+    log = logger("rasta:stream:server"),
+    error_file = tempfile(pattern = "rasta-stream-server-", fileext = ".txt")
   ),
   public = list(
     #' @description Initialize the server.
@@ -44,7 +43,7 @@ StreamServer <- R6::R6Class(
       if (!is.null(outgoing)) private$outgoing <- outgoing
 
       # Print error file path in case it is needed
-      log$debug(paste("Error file: ", error_file))
+      private$log$debug(paste("Error file:", private$error_file))
 
       while (TRUE) {
         # If either of the connection's streams are closed then
@@ -79,7 +78,7 @@ StreamServer <- R6::R6Class(
             # was the only way found to avoid the hanging.
             writeLines(error$message, error_file)
 
-            log$error(error$message)
+            private$log$error(error$message)
           }
         )
       }

@@ -1,8 +1,6 @@
 #' @include json-rpc.R
 #' @include logger.R
-
-log <- logger("rasta:server")
-
+#'
 #' @title Server
 #'
 #' @description
@@ -16,7 +14,8 @@ log <- logger("rasta:server")
 Server <- R6::R6Class(
   "Server",
   private = list(
-    executor = NULL
+    executor = NULL,
+    log = logger("rasta:server")
   ),
   public = list(
     #' @description Initialize the server.
@@ -78,7 +77,7 @@ Server <- R6::R6Class(
       else if (inherits(result, "error")) {
         message <- if (!is.null(result$message)) result$message else as.character(result)
         # Log other error types
-        log$error(message)
+        private$log$error(message)
         error <- JsonRpcError$new(JsonRpcErrorCode$ServerError, message)
       }
       if (!is.null(error)) result <- NULL
@@ -93,7 +92,7 @@ Server <- R6::R6Class(
     #'
     #' @param executor The executor to dispatch to
     start = function(executor) {
-      log$debug(paste("Starting server:", self$url()))
+      private$log$debug(paste("Starting server:", self$url()))
       private$executor <- executor
     },
 
@@ -102,7 +101,7 @@ Server <- R6::R6Class(
     #' Derived classes may override this method to gracefully
     #' shutdown the server e.g. close client connections.
     stop = function() {
-      log$debug(paste("Stopping server:", self$url()))
+      private$log$debug(paste("Stopping server:", self$url()))
     }
   )
 )
