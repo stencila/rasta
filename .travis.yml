@@ -34,6 +34,7 @@ jobs:
         - npm install semantic-release
         - npm install @semantic-release/changelog
         - npm install @semantic-release/exec
+        - npm install @semantic-release/git
       deploy:
         # Do a semantic release if necessary. See `.releaserc` for config.
         - provider: script
