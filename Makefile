@@ -35,7 +35,7 @@ docs:
 .PHONY: docs
 
 # Install package
-install: docs
+install: build
 	Rscript -e 'devtools::install()'
 
 # Register Rasta as a Stencila executor

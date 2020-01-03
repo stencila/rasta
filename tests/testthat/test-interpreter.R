@@ -8,6 +8,39 @@ test_that("manifest() returns a list with a Manifest interface", {
   expect_true(manifest$capabilities$manifest)
 })
 
+test_that("execute() works with a CodeChunk", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(list(
+    type = "CodeChunk",
+    programmingLanguage = "r",
+    text = "6 * 7"
+  ))
+  expect_equal(chunk$outputs, list(c(42)))
+  expect_null(chunk$errors)
+  expect_true(chunk$duration > 0)
+  
+  chunk <- interpreter$execute(list(
+    type = "CodeChunk",
+    programmingLanguage = "r",
+    text = "foo"
+  ))
+  expect_null(chunk$outputs)
+  expect_equal(chunk$errors, list(list(
+    type = "CodeError",
+    kind = "RuntimeError",
+    message = "object 'foo' not found"
+  )))
+  
+  chunk <- interpreter$execute(list(
+    type = "CodeChunk",
+    programmingLanguage = "r",
+    text = "bad syntax!"
+  ))
+  expect_null(chunk$outputs)
+  expect_equal(chunk$errors[[1]]$type, "CodeError")
+})
+
 test_that("dispatch() works", {
   interpreter <- Interpreter$new()
   manifest <- interpreter$dispatch("manifest")

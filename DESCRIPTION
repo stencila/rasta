@@ -10,6 +10,7 @@ BugReports: https://github.com/stencila/rasta/issues
 License: file LICENSE
 Version: 0.0.1
 Imports:
+    evaluate,
     jsonlite,
     R6
 Suggests:

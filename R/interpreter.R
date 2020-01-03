@@ -1,9 +1,7 @@
 #' @include home.R
 #' @include stdio-server.R
 #' @include logger.R
-
-log <- logger("rasta:interpreter")
-
+#'
 #' @title Interpreter
 #'
 #' @description
@@ -17,7 +15,8 @@ log <- logger("rasta:interpreter")
 Interpreter <- R6::R6Class(
   "Interpreter",
   private = list(
-    servers = list()
+    servers = list(),
+    log = logger("rasta:interpreter")
   ),
   public = list(
     #' @description Initialize an `Interpreter` instance
@@ -59,6 +58,61 @@ Interpreter <- R6::R6Class(
       )
     },
 
+    #' @description Execute a node.
+    #'
+    #' @param node The node to execute. Usually, a `CodeChunk`
+    #' @param ... Currently other arguments e.g. `session`, `job` are ignored
+    #' @returns The executed node with properties such as `outputs` and `errors`
+    #' potentially updated
+    execute = function(node, ...) {
+      # Execute the code with timing
+      before <- proc.time()[3]
+      evaluation <- tryCatch({
+        evaluate::evaluate(
+          node$text,
+          # Custom output handler for the `run` and `call` methods
+          # Returns the value itself instead of the default which is to `print()` it
+          output_handler = evaluate::new_output_handler(
+            # No `visible` argument so that only visible values
+            # are handled
+            value = function(value) value
+          )
+        )
+      }, error = identity)
+      duration <- proc.time()[3] - before
+
+      # Collect errors and outputs
+      outputs <- list()
+      errors <- list()
+      if (inherits(evaluation, "error")) {
+        # An error was caught by the tryCatch
+        errors <- c(errors, list(list(
+          type = "CodeError",
+          kind = "InternalError",
+          message = as.character(evaluation)
+        )))
+      } else {
+        # Iterate over the evaluation object and grab any errors
+        # or outputs
+        for (line in evaluation) {
+          if (!inherits(line, "source")) {
+            if (inherits(line, "error")) errors <- c(errors, list(list(
+              type = "CodeError",
+              kind = "RuntimeError",
+              message = as.character(line$message)
+            )))
+            else outputs <- c(outputs, list(line)) # TODO marshall line to JSONisable object
+          }
+        }
+      }
+
+      # Update the properties of the node and return it
+      node$outputs <- if (length(outputs) > 0) outputs else NULL
+      node$errors <- if (length(errors) > 0) errors else NULL
+      node$duration <- duration
+      node
+    },
+
     #' @description Dispatch a call to one of the interpreter's
     #' methods
     #'
@@ -79,6 +133,7 @@ Interpreter <- R6::R6Class(
       write(
         jsonlite::toJSON(
           self$manifest(),
+          auto_unbox = TRUE,
           pretty = TRUE
         ),
         file.path(dir, "rasta.json")
