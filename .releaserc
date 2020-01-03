@@ -2,9 +2,16 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/github",
+    ["@semantic-release/changelog", {
+      "changelogFile": "NEWS.md",
+      "changelogTitle": "News"
+    }],
     ["@semantic-release/exec", {
       "prepareCmd" : "sed -i -e 's!Version:.*$!Version: ${nextRelease.version}!g' DESCRIPTION",
-    }]
+    }],
+    ["@semantic-release/git", {
+      "assets": ["NEWS.md", "DESCRIPTION"]
+    }],
+    "@semantic-release/github"
   ]
 }
