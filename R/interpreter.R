@@ -32,8 +32,10 @@ Interpreter <- R6::R6Class(
     #' an executor so that peers know how to delegate method calls
     #' to this interpreter.
     manifest = function() {
+      # Note: Use `I` to avoid inadvertant unboxing to scalars
+      # when converting to JSON
       code_params <- list(
-        required = "node",
+        required = I("node"),
         properties = list(
           node = list(
             required = c("type", "programmingLanguage"),
@@ -118,9 +120,17 @@ Interpreter <- R6::R6Class(
     #'
     #' @param method The name of the method
     #' @param params A list of parameter values (i.e. arguments)
-    dispatch = function(method, params = NULL) {
-      if (is.null(params)) params <- list()
-      do.call(self[[method]], params)
+    #' @param then A function to call with the result on success
+    #' @param catch A function to call with any error
+    dispatch = function(method, params, then, catch) {
+      if (missing(params) || is.null(params)) params <- list()
+      result <- tryCatch(do.call(self[[method]], params))
+      if (inherits(result, "error")) {
+        if (missing(catch)) stop(result)
+        else catch(result)
+      } else {
+        then(result)
+      }
     },
 
     #' @description Register this interpreter on this machine.

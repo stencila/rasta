@@ -52,37 +52,51 @@ Server <- R6::R6Class(
 
     #' @description Receive a request.
     #'
-    #' @param request The `JsonRpcRequest` to receive.
-    #' @return A `JsonRpcResponse`.
-    receive = function(request) {
+    #' @param request The `JsonRpcRequest` (or JSON/list representation of it) to receive.
+    #' @param then A function to call with the response.
+    receive = function(request, then) {
       # See the equivalent implementation in Javascript:
       # https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts#L70
 
-      # Handle the request by dispatching to the executor
-      id <- NULL
-      handle <- function() {
-        request <- JsonRpcRequest$create(request)
-        id <<- request$id
+      request <- tryCatch(JsonRpcRequest$create(request), error = identity)
 
-        if (inherits(request, "JsonRpcError")) return(request)
-        if (is.null(private$executor)) stop("No executor configured yet for this server")
+      # Local function to make the following a little more terse
+      respond <- function(...) then(JsonRpcResponse$new(...))
 
-        private$executor$dispatch(request$method, request$params)
+      if (inherits(request, "JsonRpcError"))
+        respond(error = request)
+      else if (inherits(request, "error"))
+        respond(error = JsonRpcError$new(
+          JsonRpcErrorCode$InternalError,
+          error$message
+        ))
+      else if (is.null(private$executor))
+        respond(error = JsonRpcError$new(
+          JsonRpcErrorCode$ServerError,
+          "No executor configured yet for this server"
+        ))
+      else {
+        # Handle the request by dispatching to the executor
+        private$executor$dispatch(
+          request$method,
+          request$params,
+          then = function(result) {
+            respond(
+              id = request$id,
+              result = result
+            )
+          },
+          catch = function(error) {
+            # Log error and transform into a JSON-RPC error
+            message <- if (!is.null(error$message)) error$message else as.character(error)
+            private$log$error(message)
+            respond(
+              id = request$id,
+              error = JsonRpcError$new(JsonRpcErrorCode$ServerError, message)
+            )
+          }
+        )
       }
-      result <- tryCatch(handle(), error = identity)
-
-      # Transform any errors into a JSON-RPC error
-      error <- NULL
-      if (inherits(result, "JsonRpcError")) error <- result
-      else if (inherits(result, "error")) {
-        message <- if (!is.null(result$message)) result$message else as.character(result)
-        # Log other error types
-        private$log$error(message)
-        error <- JsonRpcError$new(JsonRpcErrorCode$ServerError, message)
-      }
-      if (!is.null(error)) result <- NULL
-
-      JsonRpcResponse$new(id, result, error)
     },
 
     #' @description Start the server.

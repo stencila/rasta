@@ -19,7 +19,7 @@ test_that("execute() works with a CodeChunk", {
   expect_equal(chunk$outputs, list(c(42)))
   expect_null(chunk$errors)
   expect_true(chunk$duration > 0)
-  
+
   chunk <- interpreter$execute(list(
     type = "CodeChunk",
     programmingLanguage = "r",
@@ -31,7 +31,7 @@ test_that("execute() works with a CodeChunk", {
     kind = "RuntimeError",
     message = "object 'foo' not found"
   )))
-  
+
   chunk <- interpreter$execute(list(
     type = "CodeChunk",
     programmingLanguage = "r",
@@ -43,8 +43,9 @@ test_that("execute() works with a CodeChunk", {
 
 test_that("dispatch() works", {
   interpreter <- Interpreter$new()
-  manifest <- interpreter$dispatch("manifest")
-  expect_equal(manifest, interpreter$manifest())
+  interpreter$dispatch("manifest", then = function(manifest) {
+    expect_equal(manifest, interpreter$manifest())
+  })
 })
 
 test_that("register() writes a manifest file", {

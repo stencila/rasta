@@ -13,25 +13,26 @@ test_that("url() returns NULL", {
 test_that("receive() returns a response", {
   server <- Server$new()
 
-  response <- server$receive("malformed JSON")
-  expect_true(inherits(response, "JsonRpcResponse"))
-  error <- response$error
-  expect_equal(error$code, JsonRpcErrorCode$ParseError)
-  expect_match(error$message, "Parse error: lexical error: invalid char in json text")
+  server$receive("malformed JSON", function(response) {
+    expect_true(inherits(response, "JsonRpcResponse"))
+    error <- response$error
+    expect_equal(error$code, JsonRpcErrorCode$ParseError)
+    expect_match(error$message, "Parse error: lexical error: invalid char in json text")
+  })
 
-  response <- server$receive("{}")
-  expect_true(inherits(response, "JsonRpcResponse"))
-  error <- response$error
-  expect_equal(error$code, JsonRpcErrorCode$InvalidRequest)
-  expect_equal(error$message, "Invalid request: missing property: \"method\"")
+  server$receive("{}", function(response) {
+    expect_true(inherits(response, "JsonRpcResponse"))
+    error <- response$error
+    expect_equal(error$code, JsonRpcErrorCode$InvalidRequest)
+    expect_equal(error$message, "Invalid request: missing property: \"method\"")
+  })
 
-  response <- server$receive(list(
-    method = "some_method"
-  ))
-  expect_true(inherits(response, "JsonRpcResponse"))
-  error <- response$error
-  expect_equal(error$code, JsonRpcErrorCode$ServerError)
-  expect_equal(error$message, "No executor configured yet for this server")
+  server$receive(list(method = "some_method"), function(response) {
+    expect_true(inherits(response, "JsonRpcResponse"))
+    error <- response$error
+    expect_equal(error$code, JsonRpcErrorCode$ServerError)
+    expect_equal(error$message, "No executor configured yet for this server")
+  })
 })
 
 test_that("start() does not error", {
