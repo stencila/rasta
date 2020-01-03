@@ -9,8 +9,6 @@ cache: packages
 
 warnings_are_errors: false
 
-# Deploy documentation, and upload code coverage
-# using the current release version of R
 jobs:
   include:
     - stage: deploy
@@ -22,9 +20,14 @@ jobs:
         - make docs
         - Rscript -e 'covr::codecov()'
       deploy:
-        provider: pages
-        skip-cleanup: true
-        github-token: $GITHUB_TOKEN
-        local-dir: docs
-        on:
-          branch: master
+        # Deploy documentation to Github Pages
+        # See https://docs.travis-ci.com/user/deployment/pages/
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GITHUB_TOKEN
+          local-dir: docs
+        # Do a semantic release if necessary. See `.releaserc` for config.
+        # Based on https://github.com/semantic-release/semantic-release/blob/beta/docs/recipes/travis.md#travisyml-configuration-for-non-javascript-projects
+        - provider: script
+          skip_cleanup: true
+          script: nvm install lts/* && npx semantic-release
