@@ -62,7 +62,7 @@ Server <- R6::R6Class(
       id <- NULL
       handle <- function() {
         request <- JsonRpcRequest$create(request)
-        id <- request$id
+        id <<- request$id
 
         if (inherits(request, "JsonRpcError")) return(request)
         if (is.null(private$executor)) stop("No executor configured yet for this server")
