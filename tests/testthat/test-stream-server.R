@@ -19,6 +19,5 @@ test_that("will recieve and send messages over streams", {
   response <- JsonRpcResponse$parse(jsonrpc)
   expect_equal(response$result$addresses, interpreter$manifest()$addresses)
 
-  close(incoming)
-  close(outgoing)
+  server$stop()
 })

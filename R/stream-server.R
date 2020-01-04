@@ -27,7 +27,6 @@ StreamServer <- R6::R6Class(
       super$initialize(executor)
       private$incoming <- incoming
       private$outgoing <- outgoing
-      private$error_file <- file(tempfile(pattern = "rasta-stream-server-", fileext = ".txt"), open = "w")
     },
 
     #' @description Start the server.
@@ -44,6 +43,7 @@ StreamServer <- R6::R6Class(
       if (!is.null(outgoing)) private$outgoing <- outgoing
 
       # Print error file path in case it is needed
+      private$error_file <- file(tempfile(pattern = "rasta-stream-server-", fileext = ".txt"), open = "w")
       private$log$debug(paste("Error file:", private$error_file))
 
       while (TRUE) {
@@ -97,6 +97,10 @@ StreamServer <- R6::R6Class(
       if (!is.null(private$outgoing)) {
         tryCatch(close(private$outgoing), error = identity)
         private$outgoing <- NULL
+      }
+      if (!is.null(private$error_file)) {
+        tryCatch(close(private$error_file), error = identity)
+        private$error_file <- NULL
       }
       super$stop()
     }
