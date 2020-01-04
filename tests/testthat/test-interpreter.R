@@ -19,6 +19,27 @@ test_that("execute() works with a CodeChunk", {
   expect_equal(chunk$outputs, list(c(42)))
   expect_null(chunk$errors)
   expect_true(chunk$duration > 0)
+})
+
+test_that("execute() persists session state between calls", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(list(
+    type = "CodeChunk",
+    programmingLanguage = "r",
+    text = "a <- 21\nlibrary(tools)"
+  ))
+  chunk <- interpreter$execute(list(
+    type = "CodeChunk",
+    programmingLanguage = "r",
+    text = "a\n'package:tools' %in% search()\nmode(assertWarning)"
+  ))
+  expect_equal(chunk$outputs, list(21, TRUE, "function"))
+  expect_null(chunk$errors)
+})
+
+test_that("execute() throws expected errors", {
+  interpreter <- Interpreter$new()
 
   chunk <- interpreter$execute(list(
     type = "CodeChunk",

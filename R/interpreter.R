@@ -10,20 +10,29 @@
 #' [Executor](https://github.com/stencila/executa/blob/v1.6.0/src/base/Executor.ts)
 #' interface.
 #'
+#' @details
+#' Currently only handles a single session.
+#'
 #' See [Pyla](https://github.com/stencila/pyla) and [Basha](https://github.com/stencila/basha)
 #' for examples of implementations of interpreters for other languages, in other languages.
 Interpreter <- R6::R6Class(
   "Interpreter",
   private = list(
-    servers = list(),
+    # List of servers
+    servers = NULL,
+    # Logger instance for this class
     log = logger("rasta:interpreter")
   ),
   public = list(
+    #' @field envir Environment for the session
+    envir = NULL,
+
     #' @description Initialize an `Interpreter` instance
     #'
     #' @param servers List of servers for the interpreter
     initialize = function(servers = list(StdioServer$new())) {
       private$servers <- servers
+      self$envir <- new.env()
     },
 
     #' @description Get the manifest for the interpreter.
@@ -31,7 +40,7 @@ Interpreter <- R6::R6Class(
     #' The manifest describes the capabilities and addresses of
     #' an executor so that peers know how to delegate method calls
     #' to this interpreter.
-    manifest = function() {
+    manifest = function(then) {
       # Note: Use `I` to avoid inadvertant unboxing to scalars
       # when converting to JSON
       code_params <- list(
@@ -50,7 +59,8 @@ Interpreter <- R6::R6Class(
           )
         )
       )
-      list(
+
+      manifest <- list(
         addresses = sapply(private$servers, function(server) server$addresses()),
         capabilities = list(
           manifest = TRUE,
@@ -58,20 +68,25 @@ Interpreter <- R6::R6Class(
           execute = code_params
         )
       )
+      if (!missing(then)) then(manifest)
+      else return(manifest)
     },
 
     #' @description Execute a node.
     #'
-    #' @param node The node to execute. Usually, a `CodeChunk`
-    #' @param ... Currently other arguments e.g. `session`, `job` are ignored
+    #' @param node The node to execute. Usually, a `CodeChunk`.
+    #' @param job The job id.
+    #' @param ... Currently other arguments e.g. `session` are ignored.
     #' @returns The executed node with properties such as `outputs` and `errors`
-    #' potentially updated
-    execute = function(node, ...) {
+    #' potentially updated.
+    execute = function(node, job, then, ...) {
       # Execute the code with timing
       before <- proc.time()[3]
       evaluation <- tryCatch({
         evaluate::evaluate(
           node$text,
+          # Environment to evaluate in
+          envir = self$envir,
           # Custom output handler for the `run` and `call` methods
           # Returns the value itself instead of the default which is to `print()` it
           output_handler = evaluate::new_output_handler(
@@ -112,7 +127,9 @@ Interpreter <- R6::R6Class(
       node$outputs <- if (length(outputs) > 0) outputs else NULL
       node$errors <- if (length(errors) > 0) errors else NULL
       node$duration <- duration
-      node
+
+      if (!missing(then)) then(node)
+      else return(node)
     },
 
     #' @description Dispatch a call to one of the interpreter's
@@ -120,16 +137,15 @@ Interpreter <- R6::R6Class(
     #'
     #' @param method The name of the method
     #' @param params A list of parameter values (i.e. arguments)
-    #' @param then A function to call with the result on success
+    #' @param then A function to call with the result
     #' @param catch A function to call with any error
     dispatch = function(method, params, then, catch) {
+      func <- self[[method]]
       if (missing(params) || is.null(params)) params <- list()
-      result <- tryCatch(do.call(self[[method]], params))
+      result <- tryCatch(do.call(func, c(params, list(then))))
       if (inherits(result, "error")) {
-        if (missing(catch)) stop(result)
-        else catch(result)
-      } else {
-        then(result)
+        if (!missing(catch)) catch(result)
+        else stop(result)
       }
     },
 
