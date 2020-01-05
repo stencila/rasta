@@ -27,14 +27,14 @@ test_that("execute() persists session state between calls", {
   chunk <- interpreter$execute(list(
     type = "CodeChunk",
     programmingLanguage = "r",
-    text = "a <- 21\nlibrary(tools)"
+    text = "a <- 21\nb <- list(c = 32)\nlibrary(tools)"
   ))
   chunk <- interpreter$execute(list(
     type = "CodeChunk",
     programmingLanguage = "r",
-    text = "a\n'package:tools' %in% search()\nmode(assertWarning)"
+    text = "a\nb\n'package:tools' %in% search()\nmode(assertWarning)"
   ))
-  expect_equal(chunk$outputs, list(21, TRUE, "function"))
+  expect_equal(chunk$outputs, list(21, list(c = 32), TRUE, "function"))
   expect_null(chunk$errors)
 })
 
