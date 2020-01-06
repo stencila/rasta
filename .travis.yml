@@ -7,8 +7,6 @@ r:
 
 cache: packages
 
-warnings_are_errors: false
-
 jobs:
   include:
     - stage: deploy

@@ -12,6 +12,7 @@
 #'
 #' An alias of [`base::Negate`] for consistency
 #' in naming.
+#' @param f The function to negate
 negate <- Negate
 
 #' Filter an object
