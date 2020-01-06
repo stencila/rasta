@@ -31,19 +31,7 @@ StdioServer <- R6::R6Class(
     #'
     #' @param executor The executor to serve
     start = function(executor) {
-      super$start(
-          executor,
-          # Access the C-level stdin stream using the file function
-          # to make it inary and blocking.
-          incoming = file("stdin", open = "rb", blocking = TRUE),
-          # Unfortunately, we can't do the same with stdout, and it is
-          # always a text connection, so resort to piping to another
-          # program.
-          # See https://stackoverflow.com/questions/7422575/how-to-write-raw-type-bytes-to-stdout
-          # In the future, to provide for operating systems without `cat`, a small C function could
-          # be written to write bytes to stdout.
-          outgoing = pipe("cat", "wb")
-      )
+      super$start(executor, incoming = "stdin", outgoing = "stdout")
     }
   )
 )

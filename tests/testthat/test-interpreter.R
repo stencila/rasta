@@ -79,8 +79,8 @@ test_that("start() and stop() do not error", {
   # because that blocks waiting for stdin input.
   interpreter <- Interpreter$new(servers = list(
     StreamServer$new(
-      incoming = file("stdin", "rb", blocking = FALSE),
-      outgoing = file(tempfile(), "wb")
+      incoming = tempfile(),
+      outgoing = tempfile()
     )
   ))
   expect_null(interpreter$start())

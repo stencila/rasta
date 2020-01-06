@@ -19,8 +19,9 @@ NULL
 #'
 #' @param stream The name of the stream to read from. Defaults to `"stdin"`.
 #' @param offset The offset from the start of the file to start reading from.
+#' @param cpp Should the C++ implementation be used? Defaults to `TRUE`.
 #' @returns The message as a string.
-stream_read_message <- function(stream = "stdin", offset = -1, cpp = FALSE) {
+stream_read_message <- function(stream = "stdin", offset = -1, cpp = TRUE) {
     if (cpp) {
         stream_read_message_cpp(stream, offset)
     } else {
@@ -38,8 +39,9 @@ stream_read_message <- function(stream = "stdin", offset = -1, cpp = FALSE) {
 #' @param message The message to write.
 #' @param stream The name of the stream to read from. Defaults to `"stdout"`.
 #' @param offset The offset from the start of the file to start reading from.
+#' @param cpp Should the C++ implementation be used? Defaults to `TRUE`.
 #' @returns `TRUE` if the message was successfully written, `FALSE` otherwise.
-stream_write_message <- function(message, stream = "stdout", offset = -1, cpp = FALSE) {
+stream_write_message <- function(message, stream = "stdout", offset = -1, cpp = TRUE) {
     if (cpp) {
         stream_write_message_cpp(message, stream, offset)
     } else {

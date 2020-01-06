@@ -40,6 +40,8 @@ Interpreter <- R6::R6Class(
     #' The manifest describes the capabilities and addresses of
     #' an executor so that peers know how to delegate method calls
     #' to this interpreter.
+    #'
+    #' @param then A function to call with the result
     manifest = function(then) {
       # Note: Use `I` to avoid inadvertant unboxing to scalars
       # when converting to JSON
@@ -76,6 +78,7 @@ Interpreter <- R6::R6Class(
     #'
     #' @param node The node to execute. Usually, a `CodeChunk`.
     #' @param job The job id.
+    #' @param then A function to call with the result
     #' @param ... Currently other arguments e.g. `session` are ignored.
     #' @returns The executed node with properties such as `outputs` and `errors`
     #' potentially updated.

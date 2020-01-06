@@ -47,15 +47,6 @@ StreamServer <- R6::R6Class(
       private$log$debug(paste("Error file:", private$error_file))
 
       while (TRUE) {
-        # If either of the connection's streams are closed then
-        # stop the server.
-        if (!(
-          isOpen(private$incoming) &&
-          isOpen(private$outgoing)
-        )) {
-          self$stop()
-          break
-        }
         # Handle requests, logging any unhandled errors or warnings
         tryCatch({
             message <- stream_read_message(private$incoming)
