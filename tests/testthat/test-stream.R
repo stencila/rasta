@@ -3,41 +3,36 @@ context("stream")
 test_that("stream_read_varint and stream_write_varint work", {
   stream <- file(tempfile(), "w+b")
   for (value in c(0, 1, 42, 100, 123456, .Machine$integer.max)) {
-    seek(stream)
+    seek(stream, 0, "start")
     stream_write_varint(stream, value)
-    seek(stream)
+    seek(stream, 0, "start")
     expect_equal(stream_read_varint(stream), value)
   }
   close(stream)
 })
 
-test_that("stream_read_message and stream_write_message work", {
+test_that("stream_read_message and stream_write_message R implementations work", {
   stream <- file(tempfile(), "w+b")
   for (message in c("Hello world", "1", "[1,2,3]")) {
-    seek(stream)
-    stream_write_message(stream, message)
-    seek(stream)
-    expect_equal(stream_read_message(stream), message)
+    stream_write_message(message, stream, 0, cpp = FALSE)
+    expect_equal(stream_read_message(stream, 0, cpp = FALSE), message)
   }
   close(stream)
 })
 
-test_that("can read messages from blocking streams", {
-  stream <- file(tempfile(), "w+b", blocking = TRUE)
-  stream_write_message(stream, "Hello world")
-  seek(stream)
-  expect_equal(stream_read_message(stream), "Hello world")
+test_that("stream_read_message returns an empty string", {
+  filename <- tempfile()
+  stream <- file(filename, "w+b")
+  expect_equal(stream_read_message(stream, cpp = FALSE), "")
+  expect_equal(stream_read_message(filename, cpp = TRUE), "")
   close(stream)
 })
 
-test_that("can read messages from non-blocking streams with no message", {
-  stream <- file(tempfile(), "w+b")
-  expect_null(stream_read_message(stream))
-  close(stream)
-})
-
-test_that("get an error when attempting to write to stdout", {
+test_that("get an error when attempting to write binary to stdout in R", {
   # This test is just to document the issue with attempting to
   # use `writeBin` on `stdout.`
-  expect_error(stream_write_message(stdout(), "Hello world"), "can only write to a binary connection")
+  expect_error(
+    stream_write_message("Hello world", stream = stdout(), cpp = FALSE),
+    "can only write to a binary connection"
+  )
 })

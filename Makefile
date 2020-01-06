@@ -3,14 +3,21 @@ all: lint test cover build docs
 # Setup the local development environment
 setup:
 	Rscript -e "install.packages('devtools')"
-	Rscript -e "devtools::install_github(c('jimhester/lintr', 'klutometis/roxygen', 'r-lib/covr', 'r-lib/testthat', 'r-lib/pkgdown'))"
+	Rscript -e "devtools::install_github(c('jimhester/lintr', 'klutometis/roxygen', 'r-lib/bench', 'r-lib/covr', 'r-lib/testthat', 'r-lib/pkgdown'))"
 
 # Do linting
 lint:
 	Rscript -e 'lintr::lint_package()'
 
-# Run tests
-test:
+# Run all tests
+test: test-cpp test-r
+
+# Run C++ tests
+test-cpp:
+	make -C tests/cpp
+
+# Run R tests
+test-r:
 	Rscript -e 'devtools::test()'
 
 # Run tests automatically on file changes
@@ -21,6 +28,11 @@ autotest:
 cover:
 	Rscript -e 'covr::report(file="coverage/index.html")'
 
+# Run benchmarks
+bench:
+	make -C tests/bench
+
+# Check the package
 check:
 	Rscript -e 'devtools::check()'
 

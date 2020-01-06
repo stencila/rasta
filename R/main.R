@@ -1,4 +1,6 @@
 #' @include interpreter.R
+#' @useDynLib rasta
+#' @importFrom Rcpp sourceCpp
 NULL
 
 #' Register the interpreter

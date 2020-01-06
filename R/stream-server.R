@@ -59,10 +59,10 @@ StreamServer <- R6::R6Class(
         # Handle requests, logging any unhandled errors or warnings
         tryCatch({
             message <- stream_read_message(private$incoming)
-            if (!is.null(message) && message != "") {
+            if (message != "") {
               self$receive(message, then = function(response) {
                 json <- response$serialize()
-                stream_write_message(private$outgoing, json)
+                stream_write_message(json, private$outgoing)
               })
             } else {
               break

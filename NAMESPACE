@@ -2,3 +2,5 @@
 
 export(register)
 export(start)
+importFrom(Rcpp,sourceCpp)
+useDynLib(rasta)

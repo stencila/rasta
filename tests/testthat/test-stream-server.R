@@ -7,13 +7,13 @@ test_that("will recieve and send messages over streams", {
 
   request <- JsonRpcRequest$new(method = "manifest")
   jsonrpc <- request$serialize()
-  stream_write_message(incoming, jsonrpc)
-  seek(incoming)
+  stream_write_message(jsonrpc, incoming)
+  seek(incoming, 0, "start")
 
   server <- StreamServer$new()
   server$start(interpreter, incoming, outgoing)
 
-  seek(outgoing)
+  seek(outgoing, 0, "start")
   jsonrpc <- stream_read_message(outgoing)
   expect_true(is.character(jsonrpc))
   response <- JsonRpcResponse$parse(jsonrpc)

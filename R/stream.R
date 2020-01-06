@@ -15,26 +15,42 @@
 #' @rdname stream
 NULL
 
-#' Read a length prefixed message from a stream
+#' Read a length prefixed message from a stream.
 #'
-#' @param stream The stream to read from
-#' @returns The message as a a string, or NULL if no message could be read
-stream_read_message <- function(stream) {
-    message_length <- stream_read_varint(stream)
-    if (message_length == 0) return(NULL)
-    bytes <- readBin(stream, raw(), n = message_length, size = 1)
-    rawToChar(bytes)
+#' @param stream The name of the stream to read from. Defaults to `"stdin"`.
+#' @param offset The offset from the start of the file to start reading from.
+#' @returns The message as a string.
+stream_read_message <- function(stream = "stdin", offset = -1, cpp = FALSE) {
+    if (cpp) {
+        stream_read_message_cpp(stream, offset)
+    } else {
+        if (is.character(stream)) stream <- file(stream, open = "rb")
+        if (offset > -1) seek(stream, 0, "start")
+        message_length <- stream_read_varint(stream)
+        if (message_length == 0) return("")
+        bytes <- readBin(stream, raw(), n = message_length, size = 1)
+        rawToChar(bytes)
+    }
 }
 
-#' Write a length prefixed message from a stream
+#' Write a length prefixed message to a stream.
 #'
-#' @param stream The stream to write to
-#' @param message The message to write
-stream_write_message <- function(stream, message) {
-    bytes <- if (is.character(message)) charToRaw(message) else message
-    stream_write_varint(stream, length(bytes))
-    writeBin(bytes, stream, size = 1, useBytes = TRUE)
-    flush(stream)
+#' @param message The message to write.
+#' @param stream The name of the stream to read from. Defaults to `"stdout"`.
+#' @param offset The offset from the start of the file to start reading from.
+#' @returns `TRUE` if the message was successfully written, `FALSE` otherwise.
+stream_write_message <- function(message, stream = "stdout", offset = -1, cpp = FALSE) {
+    if (cpp) {
+        stream_write_message_cpp(message, stream, offset)
+    } else {
+        if (is.character(stream)) stream <- file(stream, open = "wb")
+        if (offset > -1) seek(stream, 0, "start")
+        bytes <- if (is.character(message)) charToRaw(message) else message
+        stream_write_varint(stream, length(bytes))
+        writeBin(bytes, stream, size = 1, useBytes = TRUE)
+        flush(stream)
+        TRUE
+    }
 }
 
 msb <- as.integer(0x80)
