@@ -11,10 +11,15 @@
 StdioServer <- R6::R6Class(
   "StdioServer",
   inherit = StreamServer,
-  private = list(
-    log = logger("rasta:stdio:server")
-  ),
   public = list(
+    #' @description Initialize the server.
+    #'
+    #' @param executor The executor to serve
+    initialize = function(executor = NULL) {
+      super$initialize(executor, incoming = "stdin", outgoing = "stdout")
+      private$log <- logger("rasta:stdio:server")
+    },
+
     #' @field address The address of the server
     address = "R --slave --vanilla -e 'rasta::start()'",
 
@@ -22,16 +27,6 @@ StdioServer <- R6::R6Class(
     #' Override of `Server$addresses`.
     addresses = function() {
       list("stdio" = self$address)
-    },
-
-    #' @description Start the server.
-    #' Override of `StreamServer$start` that initializes
-    #' incoming and outgoing streams to use `stdin` and `stdout`
-    #' respectively.
-    #'
-    #' @param executor The executor to serve
-    start = function(executor) {
-      super$start(executor, incoming = "stdin", outgoing = "stdout")
     }
   )
 )

@@ -14,7 +14,6 @@ StreamServer <- R6::R6Class(
   private = list(
     incoming = NULL,
     outgoing = NULL,
-    log = logger("rasta:stream:server"),
     error_file = NULL
   ),
   public = list(
@@ -25,6 +24,7 @@ StreamServer <- R6::R6Class(
     #' @param outgoing The stream to write messages to
     initialize = function(executor = NULL, incoming = NULL, outgoing = NULL) {
       super$initialize(executor)
+      private$log <- logger("rasta:stream:server")
       private$incoming <- incoming
       private$outgoing <- outgoing
     },

@@ -15,7 +15,7 @@ Server <- R6::R6Class(
   "Server",
   private = list(
     executor = NULL,
-    log = logger("rasta:server")
+    log = NULL
   ),
   public = list(
     #' @description Initialize the server.
@@ -23,6 +23,7 @@ Server <- R6::R6Class(
     #' @param executor The executor to serve
     initialize = function(executor = NULL) {
       private$executor <- executor
+      private$log <- logger("rasta:server")
     },
 
     #' @description Get the addresses of the server.
