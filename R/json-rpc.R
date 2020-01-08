@@ -182,7 +182,11 @@ JsonRpcResponse$create <- function(source) {
 #' @name JsonRpcResponse$parse
 #' @param json The JSON to parse
 JsonRpcResponse$parse <- function(json) {
-  JsonRpcResponse$create(jsonlite::fromJSON(json))
+  list <- tryCatch(
+    jsonlite::fromJSON(json),
+    error = function(error) stop(paste(error$message, "\nwhen parsing:\n", json))
+  )
+  JsonRpcResponse$create(list)
 }
 
 #' Hydrate a list into a JSON-RPC response.
