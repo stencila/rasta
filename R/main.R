@@ -21,7 +21,7 @@ globals <- new.env(parent = emptyenv())
 #'
 #' @param stdio Start a [`StdioServer`] for the interpreter?
 #' @param pipe Start a [`PipeServer`] for the interpreter?
-#' @param background Run the interpreter in the background with this duration, in seconds. 
+#' @param background Run the interpreter in the background with this duration, in seconds.
 start <- function(stdio = TRUE, pipe = FALSE, background = -1) {
   # If this is an interactive environment then do not
   # start StdioServer and ensure that the server is run in the
