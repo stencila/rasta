@@ -25,7 +25,7 @@ home_dir <- function(subdir = NULL, ensure = FALSE) {
 #' named pipes. This is different to [`tempdir()`] (which includes a unique
 #' identifier for the R session) because it needs to be discoverable by other
 #' Stencila apps, e.g. Executa.
-#' 
+#'
 #' The temporary directory is determined from the first of the following:
 #' - the environment variables, `TMPDIR`, `TEMP`, and `TMP`, in that order
 #' - on Windows, the directories `C:\TEMP`, `C:\TMP`, `\TEMP`, and `\TMP`, in that order
@@ -35,23 +35,23 @@ home_dir <- function(subdir = NULL, ensure = FALSE) {
 #' @param subdir A subdirectory to create
 #' @param ensure Ensure that the directory (and `subdir` if specified) are present?
 tmp_dir <- function(subdir = NULL, ensure = FALSE) {
-  os_tmp_dir <- function () {
+  os_tmp_dir <- function() {
     env_vars <- filter(
       Sys.getenv(c("TMPDIR", "TEMP", "TMP"), names = FALSE),
-      function (var) nchar(var) > 0
+      function(var) nchar(var) > 0
     )
     if (length(env_vars) > 0) return(env_vars[1])
-  
+
     dirs <- filter(
       switch(
         tolower(Sys.info()["sysname"]),
-        windows = c("C:\\TEMP", "C:\\TMP", "\\TEMP","\\TMP"),
+        windows = c("C:\\TEMP", "C:\\TMP", "\\TEMP", "\\TMP"),
         c("/tmp", "/var/tmp", "/usr/tmp")
       ),
       file.exists
     )
     if (length(dirs) > 0) return(dirs[1])
-  
+
     getwd()
   }
   dir <- file.path(os_tmp_dir(), "stencila")

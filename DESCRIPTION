@@ -12,6 +12,7 @@ Version: 0.2.0
 Imports:
     evaluate,
     jsonlite,
+    later,
     R6,
     Rcpp
 Suggests:
@@ -26,7 +27,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2.9000
 Collate: 
     'RcppExports.R'
-    'home.R'
     'logger.R'
     'stream.R'
     'util.R'
@@ -34,7 +34,9 @@ Collate:
     'server.R'
     'stream-server.R'
     'stdio-server.R'
+    'os.R'
     'interpreter.R'
+    'pipe-server.R'
     'main.R'
 LinkingTo: 
     Rcpp
