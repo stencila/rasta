@@ -7,6 +7,11 @@ r:
 
 cache: packages
 
+script:
+  - make lint
+  - make test
+  - make check
+
 jobs:
   include:
     - stage: deploy
