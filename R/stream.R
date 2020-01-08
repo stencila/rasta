@@ -19,13 +19,14 @@ NULL
 #'
 #' @param stream The name of the stream to read from. Defaults to `"stdin"`.
 #' @param offset The offset from the start of the file to start reading from.
+#' @param blocking Should the read be a blocking operation?
 #' @param cpp Should the C++ implementation be used? Defaults to `TRUE`.
 #' @returns The message as a string.
-stream_read_message <- function(stream = "stdin", offset = -1, cpp = TRUE) {
+stream_read_message <- function(stream = "stdin", offset = -1, blocking = TRUE, cpp = TRUE) {
     if (cpp) {
-        stream_read_message_cpp(stream, offset)
+        stream_read_message_cpp(stream, offset, blocking = blocking)
     } else {
-        if (is.character(stream)) stream <- file(stream, open = "rb")
+        if (is.character(stream)) stream <- file(stream, open = "rb", blocking = blocking)
         if (offset > -1) seek(stream, 0, "start")
         message_length <- stream_read_varint(stream)
         if (message_length == 0) return("")

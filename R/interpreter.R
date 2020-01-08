@@ -1,4 +1,4 @@
-#' @include home.R
+#' @include os.R
 #' @include stdio-server.R
 #' @include logger.R
 #'
@@ -32,7 +32,7 @@ Interpreter <- R6::R6Class(
     #' @param servers List of servers for the interpreter
     initialize = function(servers = list(StdioServer$new())) {
       private$servers <- servers
-      self$envir <- new.env()
+      self$envir <- globalenv() # TODO: allow global or own env with new.env()
     },
 
     #' @description Get the manifest for the interpreter.
@@ -157,21 +157,19 @@ Interpreter <- R6::R6Class(
     #' Creates a manifest file for the interpreter so that
     #' it can be used as a peer by other executors.
     register = function() {
-      dir <- file.path(home(), "executors")
-      if (!file.exists(dir)) dir.create(dir, recursive = TRUE)
       write(
         jsonlite::toJSON(
           self$manifest(),
           auto_unbox = TRUE,
           pretty = TRUE
         ),
-        file.path(dir, "rasta.json")
+        file.path(home_dir("executors", ensure = TRUE), "rasta.json")
       )
     },
 
     #' @description Start serving the interpreter
-    start = function() {
-      for (server in private$servers) server$start(self)
+    start = function(background = -1) {
+      for (server in private$servers) server$start(self, background = background)
     },
 
     #' @description Stop serving the interpreter

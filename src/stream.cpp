@@ -17,8 +17,10 @@
  */
 
 #include <cassert>
+#include <cerrno>
 #include <cmath>
 #include <cstdio>
+#include <fcntl.h>
 #include <iostream>
 #include <map>
 #include <string>
@@ -99,9 +101,10 @@ bool stream_write_message(std::string message, std::string stream = "stdout", lo
 //' 
 //' @param stream The name of the stream to read from. Defaults to `stdin`.
 //' @param offset The offset from the start of the file to start reading from.
+//' @param blocking Should the read be a blocking operation?
 //' @returns The message as a string.
 // [[Rcpp::export("stream_read_message_cpp")]]
-std::string stream_read_message(std::string stream = "stdin", long offset = -1) {
+std::string stream_read_message(std::string stream = "stdin", long offset = -1, bool blocking = true) {
   // Get the stream
   static std::map<std::string, FILE*> file_pointers;
   FILE* file_pointer = stdin;
@@ -109,7 +112,9 @@ std::string stream_read_message(std::string stream = "stdin", long offset = -1) 
     std::map<std::string, FILE*>::iterator it = file_pointers.find(stream);
     if (it != file_pointers.end()) file_pointer = it->second;
     else {
-      file_pointer = std::fopen(stream.c_str(), "rb");
+      int flags = O_RDONLY;
+      if (!blocking) flags |= O_NONBLOCK;
+      file_pointer = fdopen(open(stream.c_str(), flags), "r");
       if (!file_pointer) {
         std::perror("Error in stream_read_message");
         return "";
@@ -131,7 +136,8 @@ std::string stream_read_message(std::string stream = "stdin", long offset = -1) 
   do {
     size_t bytes_read = std::fread(&byte, sizeof(char), 1, file_pointer);
     if (bytes_read != 1) {
-      if (std::ferror(file_pointer)) std::perror("Error in stream_read_message");
+      if (!blocking && errno == EAGAIN) {} // Expected error on non blocking stream
+      else if(std::ferror(file_pointer)) std::perror("Error in stream_read_message");
       return "";
     }
     // It's necessary to convert the byte to a long!
