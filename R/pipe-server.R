@@ -40,6 +40,7 @@ PipeServer <- R6::R6Class(
     #' pipes if they do not yet exist.
     #'
     #' @param executor The executor to serve
+    #' @param background Run the server in the background with this duration (s).
     start = function(executor, background = -1) {
       if (!file.exists(private$incoming)) pipe_make(private$incoming)
       if (!file.exists(private$outgoing)) pipe_make(private$outgoing)

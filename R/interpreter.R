@@ -168,6 +168,8 @@ Interpreter <- R6::R6Class(
     },
 
     #' @description Start serving the interpreter
+    #'
+    #' @param background Run the server in the background with this duration, in seconds,
     start = function(background = -1) {
       for (server in private$servers) server$start(self, background = background)
     },

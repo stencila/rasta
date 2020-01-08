@@ -132,7 +132,7 @@ Server <- R6::R6Class(
     #' call this method, i.e `super$start(executor)`
     #'
     #' @param executor The executor to dispatch to
-    #' @param background Run the server in the background with this duration, in seconds,
+    #' @param background Run the server in the background with this duration (s).
     #' between checks for new messages.
     start = function(executor, background = -1) {
       private$log$debug(paste("Starting server:", self$url()))
