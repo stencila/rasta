@@ -9,10 +9,10 @@
 
 ## Install
 
-Rasta is available as a R package. It isn't on CRAN yet, but you can install it from this repository using the [`devtools`](https://github.com/hadley/devtools) package,
+Rasta is available as a R package. It isn't on CRAN yet, but you can install it from this repository using the [`remotes`](https://github.com/r-lib/remotes) package,
 
 ```r
-devtools::install_github("stencila/rasta")
+remotes::install_github("stencila/rasta")
 ```
 
 ## Use
