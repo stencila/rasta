@@ -51,9 +51,7 @@ JsonRpcRequest <- R6::R6Class(
 
     #' @description Serialize the request to JSON
     serialize = function() {
-      as.character(
-        jsonlite::toJSON(self$dehydrate(), auto_unbox = TRUE)
-      )
+      to_json(self$dehydrate())
     }
   )
 )
@@ -83,7 +81,7 @@ JsonRpcRequest$create <- function(source) {
 #' @name JsonRpcRequest$parse
 #' @param json The JSON to parse
 JsonRpcRequest$parse <- function(json) {
-  list <- tryCatch(jsonlite::fromJSON(json), error = identity)
+  list <- tryCatch(from_json(json), error = identity)
   if (inherits(list, "error"))
     JsonRpcError$new(
       JsonRpcErrorCode$ParseError,
@@ -153,9 +151,7 @@ JsonRpcResponse <- R6::R6Class(
 
     #' @description Serialize the response to JSON
     serialize = function() {
-      as.character(
-        jsonlite::toJSON(self$dehydrate(), auto_unbox = TRUE)
-      )
+      to_json(self$dehydrate())
     }
   )
 )
@@ -183,7 +179,7 @@ JsonRpcResponse$create <- function(source) {
 #' @param json The JSON to parse
 JsonRpcResponse$parse <- function(json) {
   list <- tryCatch(
-    jsonlite::fromJSON(json),
+    from_json(json),
     error = function(error) stop(paste(error$message, "\nwhen parsing:\n", json))
   )
   JsonRpcResponse$create(list)

@@ -24,7 +24,7 @@ logger <- function(tag) {
       level = level,
       message = message
     )
-    json <- jsonlite::toJSON(data, auto_unbox = TRUE, Date = "ISO8601")
+    json <- to_json(data)
     dest <- stderr()
     write(json, dest)
     flush(dest)
