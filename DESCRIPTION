@@ -27,15 +27,17 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2.9000
 Collate: 
     'RcppExports.R'
-    'logger.R'
-    'stream.R'
     'util.R'
+    'logger.R'
+    'decode.R'
+    'stream.R'
     'json-rpc.R'
     'server.R'
     'stream-server.R'
     'stdio-server.R'
     'os.R'
     'interpreter.R'
+    'json.R'
     'pipe-server.R'
     'main.R'
 LinkingTo: 
