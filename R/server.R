@@ -64,10 +64,15 @@ Server <- R6::R6Class(
       # See the equivalent implementation in Javascript:
       # https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts#L70
 
+      private$log$debug(paste("Received request:", request))
       request <- tryCatch(JsonRpcRequest$create(request), error = identity)
 
       # Local function to make the following a little more terse
-      respond <- function(...) then(JsonRpcResponse$new(...))
+      respond <- function(...) {
+        response <- JsonRpcResponse$new(...)
+        private$log$debug(paste("Sending response:", response$serialize()))
+        then(response)
+      }
 
       if (inherits(request, "JsonRpcError"))
         respond(error = request)
@@ -84,8 +89,8 @@ Server <- R6::R6Class(
       else {
         # Handle the request by dispatching to the executor
         private$executor$dispatch(
-          request$method,
-          request$params,
+          method = request$method,
+          params = request$params,
           then = function(result) {
             respond(
               id = request$id,
