@@ -10,11 +10,13 @@ BugReports: https://github.com/stencila/rasta/issues
 License: file LICENSE
 Version: 0.3.0
 Imports:
+    base64enc,
     evaluate,
     jsonlite,
     later,
     R6,
-    Rcpp
+    Rcpp,
+    stencilaschema
 Suggests:
     covr,
     devtools,

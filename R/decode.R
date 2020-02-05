@@ -7,6 +7,8 @@ log <- logger("rasta:decode")
 #'
 #' If there is not yet an explicit handler for a R value type
 #' then logs an error and returns `NULL`.
+#' 
+#' @param value The R value to decode
 decode <- function(value) {
   # Of course, the order of these if statements is important.
   # Rearrange with caution (and testing!)
@@ -28,9 +30,9 @@ decode_image_object <- function(value, format = "png") {
   # Render the plot onto the file device
   path <- tempfile(fileext = paste0(".", format))
   get(format)(path)
-  if (inherits(value, "recordedplot")) replayPlot(value)
+  if (inherits(value, "recordedplot")) graphics::replayPlot(value)
   else print(value)
-  dev.off()
+  graphics::dev.off()
 
   # Return an ImageObject with the file contents base64 encoded
   stencilaschema::ImageObject(
