@@ -1,5 +1,20 @@
 # News
 
+# [0.4.0](https://github.com/stencila/rasta/compare/v0.3.0...v0.4.0) (2020-02-05)
+
+
+### Bug Fixes
+
+* **Interpreter:** Upgrade to new schema API ([1304994](https://github.com/stencila/rasta/commit/13049946f2a4be0cc3e502e5f87e83ffce2aaebb))
+* **Interpreter:** Use stencilaschema types ([411c83b](https://github.com/stencila/rasta/commit/411c83b8ab461334f5f30c11755d4ba52d4489ac))
+* **Package:** Add necessary imports ([c24b1a3](https://github.com/stencila/rasta/commit/c24b1a30a02792116fcff88601a889e4902557dc))
+* **Server:** Add more logging ([9ab15a0](https://github.com/stencila/rasta/commit/9ab15a09b523b21ed90fc272b1d32eaecb8a6f4d))
+
+
+### Features
+
+* **Decoding:** Add module for decoding R objects to nodes ([c38f99c](https://github.com/stencila/rasta/commit/c38f99c3dfc1ccab1c5830ba1556e15e68bb46e8))
+
 # [0.3.0](https://github.com/stencila/rasta/compare/v0.2.0...v0.3.0) (2020-01-08)
 
 
