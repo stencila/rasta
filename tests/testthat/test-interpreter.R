@@ -49,8 +49,8 @@ test_that("execute() throws expected errors", {
   expect_null(chunk$outputs)
   expect_equal(chunk$errors, list(list(
     type = "CodeError",
-    kind = "RuntimeError",
-    message = "object 'foo' not found"
+    errorType = "RuntimeError",
+    errorMessage = "object 'foo' not found"
   )))
 
   chunk <- interpreter$execute(list(

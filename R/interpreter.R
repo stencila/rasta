@@ -66,7 +66,6 @@ Interpreter <- R6::R6Class(
         addresses = sapply(private$servers, function(server) server$addresses()),
         capabilities = list(
           manifest = TRUE,
-          compile = code_params,
           execute = code_params
         )
       )
@@ -108,8 +107,8 @@ Interpreter <- R6::R6Class(
         # An error was caught by the tryCatch
         errors <- c(errors, list(list(
           type = "CodeError",
-          kind = "InternalError",
-          message = as.character(evaluation)
+          errorType = "InternalError",
+          errorMessage = as.character(evaluation)
         )))
       } else {
         # Iterate over the evaluation object and grab any errors
@@ -118,16 +117,24 @@ Interpreter <- R6::R6Class(
           if (!inherits(line, "source")) {
             if (inherits(line, "error")) errors <- c(errors, list(list(
               type = "CodeError",
-              kind = "RuntimeError",
-              message = as.character(line$message)
+              errorType = "RuntimeError",
+              errorMessage = as.character(line$message)
             )))
-            else outputs <- c(outputs, list(line)) # TODO marshall line to JSONisable object
+            else outputs <- c(outputs, list(line))
           }
         }
       }
 
       # Update the properties of the node and return it
-      node$outputs <- if (length(outputs) > 0) outputs else NULL
+      if (length(outputs) > 0) {
+        if (node$type == "CodeChunk") {
+          # CodeChunks can have multiple outputs
+          node$outputs <- map(outputs, decode)
+        } else if (node$type == "CodeExpression") {
+          # CodeExpressions must have a single output, use the last one
+          node$output <- decode(outputs[[length(outputs)]])
+        }
+      }
       node$errors <- if (length(errors) > 0) errors else NULL
       node$duration <- duration
 
@@ -144,8 +151,11 @@ Interpreter <- R6::R6Class(
     #' @param catch A function to call with any error
     dispatch = function(method, params, then, catch) {
       func <- self[[method]]
+      if (is.null(func)) stop(paste("Unknown interpreter method:", method))
       if (missing(params) || is.null(params)) params <- list()
-      result <- tryCatch(do.call(func, c(params, list(then))))
+      # NOTE: With the current API, the syntax `then = then` below is important!
+      # It ensures that the params are bound the correct way when making the function call
+      result <- tryCatch(do.call(func, c(params, list(then = then))))
       if (inherits(result, "error")) {
         if (!missing(catch)) catch(result)
         else stop(result)
@@ -158,11 +168,7 @@ Interpreter <- R6::R6Class(
     #' it can be used as a peer by other executors.
     register = function() {
       write(
-        jsonlite::toJSON(
-          self$manifest(),
-          auto_unbox = TRUE,
-          pretty = TRUE
-        ),
+        to_json(self$manifest(), pretty = TRUE),
         file.path(home_dir("executors", ensure = TRUE), "rasta.json")
       )
     },
