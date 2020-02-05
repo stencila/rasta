@@ -11,8 +11,7 @@ test_that("manifest() returns a list with a Manifest interface", {
 test_that("execute() works with a CodeChunk", {
   interpreter <- Interpreter$new()
 
-  chunk <- interpreter$execute(list(
-    type = "CodeChunk",
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "6 * 7"
   ))
@@ -24,13 +23,11 @@ test_that("execute() works with a CodeChunk", {
 test_that("execute() persists session state between calls", {
   interpreter <- Interpreter$new()
 
-  chunk <- interpreter$execute(list(
-    type = "CodeChunk",
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "a <- 21\nb <- list(c = 32)\nlibrary(tools)"
   ))
-  chunk <- interpreter$execute(list(
-    type = "CodeChunk",
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "a\nb\n'package:tools' %in% search()\nmode(assertWarning)"
   ))
@@ -41,25 +38,22 @@ test_that("execute() persists session state between calls", {
 test_that("execute() throws expected errors", {
   interpreter <- Interpreter$new()
 
-  chunk <- interpreter$execute(list(
-    type = "CodeChunk",
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "foo"
   ))
   expect_null(chunk$outputs)
-  expect_equal(chunk$errors, list(list(
-    type = "CodeError",
+  expect_equal(chunk$errors, list(stencilaschema::CodeError(
     errorType = "RuntimeError",
     errorMessage = "object 'foo' not found"
   )))
 
-  chunk <- interpreter$execute(list(
-    type = "CodeChunk",
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "bad syntax!"
   ))
   expect_null(chunk$outputs)
-  expect_equal(chunk$errors[[1]]$type, "CodeError")
+  expect_true(inherits(chunk$errors[[1]], "CodeError"))
 })
 
 test_that("dispatch() works", {

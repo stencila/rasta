@@ -105,8 +105,7 @@ Interpreter <- R6::R6Class(
       errors <- list()
       if (inherits(evaluation, "error")) {
         # An error was caught by the tryCatch
-        errors <- c(errors, list(list(
-          type = "CodeError",
+        errors <- c(errors, list(stencilaschema::CodeError(
           errorType = "InternalError",
           errorMessage = as.character(evaluation)
         )))
@@ -115,8 +114,7 @@ Interpreter <- R6::R6Class(
         # or outputs
         for (line in evaluation) {
           if (!inherits(line, "source")) {
-            if (inherits(line, "error")) errors <- c(errors, list(list(
-              type = "CodeError",
+            if (inherits(line, "error")) errors <- c(errors, list(stencilaschema::CodeError(
               errorType = "RuntimeError",
               errorMessage = as.character(line$message)
             )))
