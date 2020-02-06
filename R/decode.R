@@ -7,7 +7,7 @@ log <- logger("rasta:decode")
 #'
 #' If there is not yet an explicit handler for a R value type
 #' then logs an error and returns `NULL`.
-#' 
+#'
 #' @param value The R value to decode
 decode <- function(value) {
   # Of course, the order of these if statements is important.
@@ -30,7 +30,7 @@ decode <- function(value) {
 decode_image_object <- function(value, format = "png") {
   # Check that a graphics device exists for the requested format
   if (!exists(format)) stop(paste("Unsupported format", format))
-  
+
   # Create a new graphics device for the format, with
   # a temporary path
   filename <- tempfile(fileext = paste0(".", format))
