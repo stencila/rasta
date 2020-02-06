@@ -1,5 +1,12 @@
 # News
 
+## [0.4.1](https://github.com/stencila/rasta/compare/v0.4.0...v0.4.1) (2020-02-06)
+
+
+### Bug Fixes
+
+* **Decode:** Remove incorrect use of graphics::replayPlot ([ccbae8f](https://github.com/stencila/rasta/commit/ccbae8f72b207d40d2ac902f5a84fb9d118ecae6)), closes [#1](https://github.com/stencila/rasta/issues/1)
+
 # [0.4.0](https://github.com/stencila/rasta/compare/v0.3.0...v0.4.0) (2020-02-05)
 
 
