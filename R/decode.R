@@ -25,17 +25,20 @@ decode <- function(value) {
 }
 
 # The following functions are named after the Stencila schema node types that they encode **to**
+# using snake_case convention
 
 decode_image_object <- function(value, format = "png") {
-  # Render the plot onto the file device
-  path <- tempfile(fileext = paste0(".", format))
-  get(format)(path)
-  if (inherits(value, "recordedplot")) graphics::replayPlot(value)
-  else print(value)
-  graphics::dev.off()
+  # Check that a graphics device exists for the requested format
+  if (!exists(format)) stop(paste("Unsupported format", format))
+  
+  # Create a new graphics device for the format, with
+  # a temporary path
+  filename <- tempfile(fileext = paste0(".", format))
+  get(format)(filename)
+  print(value)
+  grDevices::dev.off()
 
   # Return an ImageObject with the file contents base64 encoded
-  stencilaschema::ImageObject(
-    contentUrl = paste0("data:image/", format, ";base64,", base64enc::base64encode(path))
-  )
+  data_uri <- paste0("data:image/", format, ";base64,", base64enc::base64encode(filename))
+  stencilaschema::ImageObject(contentUrl = data_uri)
 }
