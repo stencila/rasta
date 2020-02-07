@@ -18,7 +18,33 @@ describe("decode", {
 
   describe("decodes data.frames to Datatables", {
 
-    test_that("mtcars", {
+    test_that("column types are converted to validators correctly", {
+      dt <- decode(
+        data.frame(
+          a = 1:2,
+          b = c(TRUE, FALSE),
+          c = c("x", "y"),
+          d = factor(c("X", "Y"), levels = c("X", "Y", "Z")),
+          stringsAsFactors = FALSE
+        )
+      )
+
+      expect_equal(length(dt$columns), 4)
+      expect_equal(
+        datatable_colnames(dt),
+        c("a", "b", "c", "d")
+      )
+      expect_equal(
+        datatable_coltypes(dt),
+        c("NumberValidator", "BooleanValidator", "StringValidator", "EnumValidator")
+      )
+      expect_equal(
+        dt$columns[[4]]$validator$items$values,
+        c("X", "Y", "Z")
+      )
+    })
+
+    test_that("decodes mtcars", {
       datatable <- decode(mtcars)
 
       expect_equal(length(datatable$columns), 11)
@@ -32,7 +58,7 @@ describe("decode", {
       )
     })
 
-    test_that("chickwts", {
+    test_that("decodes chickwts", {
       datatable <- decode(chickwts)
 
       expect_equal(length(datatable$columns), 2)
