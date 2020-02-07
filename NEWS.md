@@ -1,5 +1,19 @@
 # News
 
+# [0.5.0](https://github.com/stencila/rasta/compare/v0.4.1...v0.5.0) (2020-02-07)
+
+
+### Bug Fixes
+
+* **JSON:** Suppress warning in toJSON ([c3cfc33](https://github.com/stencila/rasta/commit/c3cfc33a0f778e37cc68f350da0d0890223447e5))
+
+
+### Features
+
+* **Codec:** Add support for decoding more R types ([f3ef158](https://github.com/stencila/rasta/commit/f3ef1580b85edea7e801899879921c0afd672122))
+* **Decode:** Add handling of table values. ([35013a0](https://github.com/stencila/rasta/commit/35013a05991a2268b7df38f4dfd49c5660708ca0))
+* **Logger:** Allow get / set of log handler ([b8f3a6a](https://github.com/stencila/rasta/commit/b8f3a6abf3d6eaf0869d4338132f2aa6a9385328))
+
 ## [0.4.1](https://github.com/stencila/rasta/compare/v0.4.0...v0.4.1) (2020-02-06)
 
 

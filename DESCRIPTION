@@ -8,7 +8,7 @@ Authors@R: c(person("Nokome", "Bentley", email = "nokome@stenci.la", role = c("a
 URL: https://github.com/stencila/rasta#readme
 BugReports: https://github.com/stencila/rasta/issues
 License: file LICENSE
-Version: 0.4.1
+Version: 0.5.0
 Imports:
     base64enc,
     evaluate,
