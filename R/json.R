@@ -9,14 +9,18 @@ NULL
 
 to_json <- function(object, pretty = FALSE) {
   as.character(
-    jsonlite::toJSON(
-      object,
-      pretty = pretty,
-      force = TRUE,
-      auto_unbox = TRUE,
-      null = "null",
-      na = "null",
-      Date = "ISO8601"
+    # jsonlite warnings (like this https://github.com/jeroen/jsonlite/blob/c9c22efdaeed089d503c7d85863cc050ee4d833a/R/asJSON.list.R#L41)
+    # cause issues (due to error handling elsewhere?) so we suppress them for now.
+    suppressWarnings(
+      jsonlite::toJSON(
+        object,
+        pretty = pretty,
+        force = TRUE,
+        auto_unbox = TRUE,
+        null = "null",
+        na = "null",
+        Date = "ISO8601"
+      )
     )
   )
 }
