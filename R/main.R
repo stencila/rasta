@@ -1,3 +1,4 @@
+#' @include globals.R
 #' @include interpreter.R
 #' @include stdio-server.R
 #' @include pipe-server.R
@@ -10,9 +11,6 @@ NULL
 #' @seealso [`Interpreter$register`](Interpreter.html#method-register)
 #' @export
 register <- function() Interpreter$new()$register() #nocov
-
-# Package globals
-globals <- new.env(parent = emptyenv())
 
 #' Start the interpreter
 #'

@@ -20,6 +20,7 @@ Imports:
 Suggests:
     covr,
     devtools,
+    ggplot2,
     lintr,
     pkgdown,
     roxygen2,
@@ -32,8 +33,9 @@ RoxygenNote: 7.0.2.9000
 Collate: 
     'RcppExports.R'
     'util.R'
+    'globals.R'
     'logger.R'
-    'decode.R'
+    'codec.R'
     'stream.R'
     'json-rpc.R'
     'server.R'
