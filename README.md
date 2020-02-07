@@ -44,8 +44,11 @@ Task                                                    | `make`                
 ------------------------------------------------------- |-----------------------|-----------------|
 Install development dependencies                        | `make setup`          | 
 Run linting                                             | `make lint`           | `lintr::lint_package()`
-Run tests                                               | `make test`           | `devtools::test()` or `Ctrl+Shift+T`
+Run R tests                                             | `make test-r`           | `devtools::test()` or `Ctrl+Shift+T`
+Run C++ tests                                           | `make test-cpp`       |
+Run all tests                                           | `make test`
 Run tests with coverage                                 | `make cover`          | `covr::package_coverage()`
+Run benchmarks                                          | `make bench`          |
 Build documentation                                     | `make docs`           |
 Check the package                                       | `make check`          | `Ctrl+Shift+E`
 Build                                                   | `make build`          | `Ctrl+Shift+B`
@@ -53,7 +56,7 @@ Clean                                                   | `make clean`          
 
 ### Testing
 
-Unit tests live in the `tests` folder and are written using `testthat`.
+Unit tests live in the `tests` folder. Most of the tests are written using the `testthat` package. When writing regression tests for a specific issues, please name the test file accordingly e.g. `tests/testthat/test-issue-1.R`. There is also a `tests/cpp` folder for C++ tests and a `tests/bench` folder for bechmarking.
 
 ### Documentation
 
