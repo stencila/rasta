@@ -1,7 +1,11 @@
 context("logger")
 
-test_that("can create a logger and send ND-JSON events to stderr", {
+test_that("default log handler sends ND-JSON events to stderr", {
   log <- logger("rasta:test")
+
+  # Ensure that using default handler
+  current_handler  <- get_log_handler()
+  set_log_handler(default_log_handler)
 
   # Divert stderr to a text stream
   out <- textConnection("out", "w")
@@ -21,9 +25,11 @@ test_that("can create a logger and send ND-JSON events to stderr", {
   events <- jsonlite::fromJSON(json)
   close(out)
 
+  # Restore log handler
+  set_log_handler(current_handler)
+
   expect_equal(events$tag, rep("rasta:test", 4))
   expect_equal(class(strptime(events$time, "%Y-%m-%dT%H:%M:%S%z")), c("POSIXlt", "POSIXt"))
   expect_equal(events$level, c(3, 2, 1, 0))
   expect_equal(events$message, c("for debugging", "some info", "a warning", "an error"))
-
 })
