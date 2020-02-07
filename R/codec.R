@@ -18,6 +18,11 @@ decode <- function(value) {
   if (inherits(value, "recordedplot") || inherits(value, "ggplot")) {
     # Decode to an ImageObject
     decode_image_object(value)
+  } else if (inherits(value, "table")) {
+    # The functions `summary` and `table` return class "table" results
+    # Currently, just "print" them.
+    # In the future, we may convert these to Datatables.
+    paste(utils::capture.output(print(value)), collapse = "\n")
   } else if (is.data.frame(value)) {
     # Decode to a Datatable
     decode_datatable(value)
