@@ -1,5 +1,12 @@
 # News
 
+## [0.5.1](https://github.com/stencila/rasta/compare/v0.5.0...v0.5.1) (2020-03-13)
+
+
+### Bug Fixes
+
+* **Dependencies:** Upgrade and pin to Schema 0.42.0 ([f6decf7](https://github.com/stencila/rasta/commit/f6decf7c39591cebee655bc7ff599884d782c734))
+
 # [0.5.0](https://github.com/stencila/rasta/compare/v0.4.1...v0.5.0) (2020-02-07)
 
 
