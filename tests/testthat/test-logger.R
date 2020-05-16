@@ -33,3 +33,19 @@ test_that("default log handler sends ND-JSON events to stderr", {
   expect_equal(events$level, c(3, 2, 1, 0))
   expect_equal(events$message, c("for debugging", "some info", "a warning", "an error"))
 })
+
+test_that("falls back to default_log_handler", {
+  log <- logger("rasta:test")
+  set_log_handler(NULL)
+
+  out <- textConnection("out", "w")
+  sink(out,  type = "message")
+  log$debug("this should not fail")
+  sink(type = "message")
+  lines <- textConnectionValue(out)
+
+  set_log_handler(default_log_handler)
+
+  entry <- jsonlite::fromJSON(lines[1])
+  expect_equal(entry$message, "this should not fail")
+})

@@ -27,7 +27,7 @@ logger <- function(tag) {
       message = message
     )
     handler <- globals$log_handler
-    if (!is.function(handler)) hander <- default_log_handler
+    if (!is.function(handler)) handler <- default_log_handler
     handler(data)
   }
   list(
