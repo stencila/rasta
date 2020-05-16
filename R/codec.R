@@ -1,3 +1,6 @@
+# A codec for encoding / decoding between R objects
+# and Stencila Schema nodes.
+
 #' @include logger.R
 #' @include util.R
 
@@ -7,7 +10,7 @@ log <- logger("rasta:codec")
 #'
 #' If there is not yet an explicit handler for a R value type
 #' then logs a warning and returns the value as the string output
-#' from `print` (which may be customised e.g. `print.table` is used for the results of `summary()`).
+#' from `print` (which may be customized e.g. `print.table` is used for the results of `summary()`).
 #'
 #' @param value The R value to decode
 #' @export

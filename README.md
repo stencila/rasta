@@ -56,7 +56,7 @@ Clean                                                   | `make clean`          
 
 ### Testing
 
-Unit tests live in the `tests` folder. Most of the tests are written using the `testthat` package. When writing regression tests for a specific issues, please name the test file accordingly e.g. `tests/testthat/test-issue-1.R`. There is also a `tests/cpp` folder for C++ tests and a `tests/bench` folder for bechmarking.
+Unit tests live in the `tests` folder. Most of the tests are written using the `testthat` package. When writing regression tests for a specific issues, please name the test file accordingly e.g. `tests/testthat/test-issue-1.R`. There is also a `tests/cpp` folder for C++ tests and a `tests/bench` folder for benchmarking.
 
 ### Documentation
 

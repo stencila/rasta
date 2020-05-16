@@ -5,7 +5,7 @@
 #'
 #' @description
 #' A server is responsible for receiving requests to call an executor
-#' method. This is an abstract base class for concreate classes of servers that will
+#' method. This is an abstract base class for concrete classes of servers that will
 #' each communicate with clients over alternative transports (e.g. stdio, HTTP).
 #'
 #' R implementation of Executa's
@@ -113,7 +113,7 @@ Server <- R6::R6Class(
     #' @description Read a message.
     #'
     #' @note
-    #' Derived classes will usally want to override this method
+    #' Derived classes will usually want to override this method
     #' to read a message from a specific transport.
     #'
     #' @param blocking Should the read be a blocking operation?
@@ -123,7 +123,7 @@ Server <- R6::R6Class(
     #' @description Write a message.
     #'
     #' @note
-    #' Derived classes will usally want to override this method
+    #' Derived classes will usually want to override this method
     #' to write a message to a specific transport.
     #'
     #' @param message The message to write.

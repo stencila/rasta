@@ -1,5 +1,5 @@
 # Create a temporary file stream that can be read and written to
-# Use stream for R tests, so that it does not create a new connection fo each itertion.
+# Use stream for R tests, so that it does not create a new connection fo each iteration.
 filename <- tempfile()
 stream <- file(filename, "w+b")
 

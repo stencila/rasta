@@ -1,4 +1,4 @@
-# Operating specific functions
+# Operating system specific functions
 
 #' Get the Stencila home directory.
 #'

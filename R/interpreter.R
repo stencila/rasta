@@ -43,7 +43,7 @@ Interpreter <- R6::R6Class(
     #'
     #' @param then A function to call with the result
     manifest = function(then) {
-      # Note: Use `I` to avoid inadvertant unboxing to scalars
+      # Note: Use `I` to avoid inadvertent unboxing to scalars
       # when converting to JSON
       code_params <- list(
         required = I("node"),

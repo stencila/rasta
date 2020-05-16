@@ -1,6 +1,6 @@
 # Utility functions used internally in this package
 # and not intended to be exported. These functions
-# provide convienience and some consistency between implementations
+# provide convenience and some consistency between implementations
 # in this packages and those in other languages, in
 # particular Javascript / Typescript.
 
@@ -17,7 +17,7 @@ negate <- Negate
 
 #' Filter an object
 #'
-#' Analagous to `Array.filter` in Javascript. A wrapper around
+#' Analogous to `Array.filter` in Javascript. A wrapper around
 #' [`base::Filter`] which provides the same parameter order.
 #'
 #' @param object The object to filter
@@ -26,7 +26,7 @@ filter <- function(object, func) Filter(func, object)
 
 #' Map a function across entries in an object
 #'
-#' This is analagous to `Object.entries(object).map(...)`
+#' This is analogous to `Object.entries(object).map(...)`
 #' in Javascript. It handles both scalar and vector
 #' object types.
 #'
@@ -38,7 +38,7 @@ map <- function(object, func, ...) {
   else func(object, ...)
 }
 
-#' Create a transformattion of a object by recursively
+#' Create a transformation of a object by recursively
 #' applying a function to it. Could be called `deepMap`.
 #'
 #' @param object The object to map over
@@ -48,9 +48,9 @@ transform <- function(object, func, ...) {
   map(object, function(child) map(child, func, ...))
 }
 
-#' Execute a reducer function on each item in a colleciton
+#' Execute a reducer function on each item in a collection
 #'
-#' Analagous to `Array.reduce` in Javascript. A wrapper around
+#' Analogous to `Array.reduce` in Javascript. A wrapper around
 #' [`base::Reduce`] which provides the same parameter order.
 #'
 #' @param object The object to filter
@@ -63,7 +63,7 @@ reduce <- function(object, func, init) Reduce(func, object, init)
 
 #' Extract regex matches from a string
 #'
-#' Similar to the `stringr::str_match` and Javascript's `String.match`.
+#' Similar to the `stringr::str_match` and Javascript `String.match`.
 #'
 #' @param string The string to match
 #' @param regex The regex to match against
