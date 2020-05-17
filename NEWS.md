@@ -1,5 +1,12 @@
 # News
 
+## [0.5.2](https://github.com/stencila/rasta/compare/v0.5.1...v0.5.2) (2020-05-17)
+
+
+### Bug Fixes
+
+* **Logger:** Fix spelling mistake in assignment of fallback ([4095d67](https://github.com/stencila/rasta/commit/4095d674b1a28a534ae6ea748218433125fcad1b))
+
 ## [0.5.1](https://github.com/stencila/rasta/compare/v0.5.0...v0.5.1) (2020-03-13)
 
 
