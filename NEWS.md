@@ -1,5 +1,18 @@
 # News
 
+# [0.6.0](https://github.com/stencila/rasta/compare/v0.5.2...v0.6.0) (2020-08-11)
+
+
+### Bug Fixes
+
+* **Messages:** Send other messages to the log. ([a91fe32](https://github.com/stencila/rasta/commit/a91fe32d43adca2a6cc6976035e4e237b31725c5))
+* **Warnings:** Send code chunk warning messages to log instead of output ([dc4b19e](https://github.com/stencila/rasta/commit/dc4b19e2e9e2b5cc49d193d839a3c710956e30db))
+
+
+### Features
+
+* **Interpreter:** Handle fig.width and fig.height options ([f721587](https://github.com/stencila/rasta/commit/f7215871f8223650117f2f9911d005ac5c8eaca2))
+
 ## [0.5.2](https://github.com/stencila/rasta/compare/v0.5.1...v0.5.2) (2020-05-17)
 
 
