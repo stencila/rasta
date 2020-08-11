@@ -82,6 +82,14 @@ Interpreter <- R6::R6Class(
     #' @returns The executed node with properties such as `outputs` and `errors`
     #' potentially updated.
     execute = function(node, job, then, ...) {
+      # Check for node properties that may affect how they are executed, or
+      # their values are decoded.
+      options <- list()
+      if (!is.null(node$meta)) {
+        options$width <- try(as.double(node$meta["fig.width"]))
+        options$height <- try(as.double(node$meta["fig.height"]))
+      }
+      
       # Execute the code with timing
       before <- proc.time()[3]
       evaluation <- tryCatch({
@@ -139,10 +147,10 @@ Interpreter <- R6::R6Class(
       if (length(outputs) > 0) {
         if (node$type == "CodeChunk") {
           # CodeChunks can have multiple outputs
-          node$outputs <- map(outputs, decode)
+          node$outputs <- map(outputs, decode, options)
         } else if (node$type == "CodeExpression") {
           # CodeExpressions must have a single output, use the last one
-          node$output <- decode(outputs[[length(outputs)]])
+          node$output <- decode(outputs[[length(outputs)]], options)
         }
       }
       node$errors <- if (length(errors) > 0) errors else NULL

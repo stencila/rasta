@@ -13,14 +13,15 @@ log <- logger("rasta:codec")
 #' from `print` (which may be customized e.g. `print.table` is used for the results of `summary()`).
 #'
 #' @param value The R value to decode
+#' @param options Options for decoding
 #' @export
-decode <- function(value) {
+decode <- function(value, options = list()) {
   # Of course, the order of these if statements is important.
   # Generally, have the more specific items at the top.
   # Rearrange with caution (and testing!)
   if (inherits(value, "recordedplot") || inherits(value, "ggplot")) {
     # Decode to an ImageObject
-    decode_image_object(value)
+    decode_image_object(value, options=options)
   } else if (inherits(value, "table")) {
     # The functions `summary` and `table` return class "table" results
     # Currently, just "print" them.
@@ -45,7 +46,7 @@ decode <- function(value) {
 # The following functions are named after the Stencila schema node types that they encode **to**
 # using snake_case convention
 
-decode_image_object <- function(value, format = "png") {
+decode_image_object <- function(value, options = list(), format = "png") {
   # Check that a graphics device exists for the requested format
   if (!exists(format)) {
     log$warn(paste("Unsupported format, defaulting to PNG:", format))
@@ -55,7 +56,13 @@ decode_image_object <- function(value, format = "png") {
   # Create a new graphics device for the format, with
   # a temporary path
   filename <- tempfile(fileext = paste0(".", format))
-  get(format)(filename)
+  func <- get(format)
+  func(
+    filename,
+    width=ifelse(!is.null(options$width), options$width, 400),
+    height=ifelse(!is.null(options$height), options$height, 400),
+    units="px"
+  )
   print(value)
   grDevices::dev.off()
 

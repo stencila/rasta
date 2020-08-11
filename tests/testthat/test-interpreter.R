@@ -35,6 +35,19 @@ test_that("execute() persists session state between calls", {
   expect_null(chunk$errors)
 })
 
+test_that("execute() sets the width and height of image outputs", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1)",
+    meta = list(
+      fig.width = "700",
+      fig.height = 1000
+    )
+  ))
+})
+
 test_that("execute() sends warning messages to the log", {
   interpreter <- Interpreter$new()
 
