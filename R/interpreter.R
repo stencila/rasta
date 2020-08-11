@@ -114,10 +114,18 @@ Interpreter <- R6::R6Class(
         # or outputs
         for (line in evaluation) {
           if (!inherits(line, "source")) {
-            if (inherits(line, "error")) errors <- c(errors, list(stencilaschema::CodeError(
-              errorType = "RuntimeError",
-              errorMessage = as.character(line$message)
-            )))
+            if (inherits(line, "error")) {
+              errors <- c(errors, list(stencilaschema::CodeError(
+                errorType = "RuntimeError",
+                errorMessage = as.character(line$message)
+              )))
+            }
+            else if (inherits(line, "warning")) {
+              # Currently we do not have a place to put warnings
+              # or other messages on the code chunk. Therefore,
+              # send them to the log to avoid them polluting outputs.
+              private$log$warn(line$message)
+            }
             else outputs <- c(outputs, list(line))
           }
         }

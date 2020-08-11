@@ -35,6 +35,17 @@ test_that("execute() persists session state between calls", {
   expect_null(chunk$errors)
 })
 
+test_that("execute() sends warning messages to the log", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "warning('a warning message')"
+  ))
+  expect_null(chunk$outputs)
+  expect_equal(last_log()$message, "a warning message")
+})
+
 test_that("execute() throws expected errors", {
   interpreter <- Interpreter$new()
 
