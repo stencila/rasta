@@ -42,8 +42,27 @@ test_that("execute() sends warning messages to the log", {
     programmingLanguage = "r",
     text = "warning('a warning message')"
   ))
+
   expect_null(chunk$outputs)
-  expect_equal(last_log()$message, "a warning message")
+
+  last <- last_log()
+  expect_equal(last$level, 1)
+  expect_equal(last$message, "a warning message")
+})
+
+test_that("execute() sends other messages to the log", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "packageStartupMessage('a package startup message')"
+  ))
+
+  expect_null(chunk$outputs)
+
+  last <- last_log()
+  expect_equal(last$level, 2) # INFO level
+  expect_equal(last$message, "a package startup message\n")
 })
 
 test_that("execute() throws expected errors", {

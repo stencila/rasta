@@ -126,6 +126,10 @@ Interpreter <- R6::R6Class(
               # send them to the log to avoid them polluting outputs.
               private$log$warn(line$message)
             }
+            else if (inherits(line, "message")) {
+              # As above, but treat other messages as info
+              private$log$info(line$message)
+            }
             else outputs <- c(outputs, list(line))
           }
         }
