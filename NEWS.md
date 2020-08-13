@@ -1,5 +1,12 @@
 # News
 
+# [0.7.0](https://github.com/stencila/rasta/compare/v0.6.0...v0.7.0) (2020-08-13)
+
+
+### Features
+
+* **Interpreter:** Allow setting of chunk options using comments ([a53b19f](https://github.com/stencila/rasta/commit/a53b19f403fcad71b6c1df222104a5f27500dc89))
+
 # [0.6.0](https://github.com/stencila/rasta/compare/v0.5.2...v0.6.0) (2020-08-11)
 
 
