@@ -42,14 +42,14 @@ test_that("execute() sets the width and height of image outputs", {
     programmingLanguage = "r",
     text = "plot(1)",
     meta = list(
-      fig.width = "700",
-      fig.height = 1000
+      fig.width = "7",
+      fig.height = 10
     )
   ))
 
   chunk2 <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
-    text = "#' @width  700\n#' @height 1000\nplot(1)",
+    text = "#' @width  7\n#' @height 10\nplot(1)",
   ))
 
   expect_equal(chunk1$outputs, chunk2$outputs)
