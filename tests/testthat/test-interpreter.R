@@ -38,7 +38,7 @@ test_that("execute() persists session state between calls", {
 test_that("execute() sets the width and height of image outputs", {
   interpreter <- Interpreter$new()
 
-  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+  chunk1 <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "plot(1)",
     meta = list(
@@ -46,6 +46,20 @@ test_that("execute() sets the width and height of image outputs", {
       fig.height = 1000
     )
   ))
+
+  chunk2 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "#' @width  700\n#' @height 1000\nplot(1)",
+  ))
+
+  expect_equal(chunk1$outputs, chunk2$outputs)
+
+  chunk3 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1)",
+  ))
+
+  expect_false(isTRUE(all.equal(chunk2$outputs, chunk3$outputs)))
 })
 
 test_that("execute() sends warning messages to the log", {
@@ -75,7 +89,7 @@ test_that("execute() sends other messages to the log", {
 
   last <- last_log()
   expect_equal(last$level, 2) # INFO level
-  expect_equal(last$message, "a package startup message\n")
+  expect_equal(last$message, "a package startup message")
 })
 
 test_that("execute() throws expected errors", {

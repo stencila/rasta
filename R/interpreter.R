@@ -15,7 +15,7 @@
 #'
 #' See [Pyla](https://github.com/stencila/pyla) and [Basha](https://github.com/stencila/basha)
 #' for examples of implementations of interpreters for other languages, in other languages.
-Interpreter <- R6::R6Class(
+Interpreter <- R6::R6Class( # nolint
   "Interpreter",
   private = list(
     # List of servers
@@ -82,19 +82,33 @@ Interpreter <- R6::R6Class(
     #' @returns The executed node with properties such as `outputs` and `errors`
     #' potentially updated.
     execute = function(node, job, then, ...) {
-      # Check for node properties that may affect how they are executed, or
+      # Options that may affect how they are executed, or
       # their values are decoded.
       options <- list()
+
+      # Check for options in the node's `meta`` property
       if (!is.null(node$meta)) {
-        options$width <- try(as.double(node$meta["fig.width"]))
-        options$height <- try(as.double(node$meta["fig.height"]))
+        options$width <- node$meta[["fig.width"]]
+        options$height <- node$meta[["fig.height"]]
       }
-      
+
+      # Check for options in comments
+      code <- node$text
+      lines <- string_split(code, "\n")
+      for (line in lines) {
+        match <- string_match(line, "^\\s*#'\\s+@(\\w+)\\s*(.+)")
+        if (!is.null(match)) {
+          name <- match[2]
+          value <- match[3]
+          options[name] <- value
+        }
+      }
+
       # Execute the code with timing
       before <- proc.time()[3]
       evaluation <- tryCatch({
         evaluate::evaluate(
-          node$text,
+          code,
           # Environment to evaluate in
           envir = self$envir,
           # Custom output handler for the `run` and `call` methods
@@ -132,11 +146,11 @@ Interpreter <- R6::R6Class(
               # Currently we do not have a place to put warnings
               # or other messages on the code chunk. Therefore,
               # send them to the log to avoid them polluting outputs.
-              private$log$warn(line$message)
+              private$log$warn(trimws(line$message, "right"))
             }
             else if (inherits(line, "message")) {
               # As above, but treat other messages as info
-              private$log$info(line$message)
+              private$log$info(trimws(line$message, "right"))
             }
             else outputs <- c(outputs, list(line))
           }
