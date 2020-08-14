@@ -11,6 +11,18 @@ NULL
 
 library(stencilaschema)
 
+#' Declare that a node is scalar
+#'
+#' So that the object is "unboxed" when serialized to JSON
+#' 
+#' @param object The object to mark as a scalar
+as_scalar <- function(object) {
+  if (!is.null(object)) {
+    class(object) <- c("scalar", class(object))
+  }
+  object
+}
+
 to_json <- function(object, pretty = FALSE) {
   # Unbox scalar properties of Stencila nodes.
   # This is necessary because otherwise numbers, strings etc get
