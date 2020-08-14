@@ -89,3 +89,13 @@ string_split <- function(string, regex) {
 string_right <- function(string, chars = 1) {
   substr(string, nchar(string) - (chars - 1), nchar(string))
 }
+
+#' Declare that a node is scalar
+#'
+#' So that these values are "unboxed" when serialized to JSON
+as_scalar <- function(node) {
+  if (!is.null(node)) {
+    class(node) <- c("scalar", class(node))
+  }
+  node
+}

@@ -50,11 +50,11 @@ test_that("can parse() a request from JSON", {
 test_that("can dehydrate() a request to a list", {
   expect_equal(
     JsonRpcRequest$new()$dehydrate(),
-    list(jsonrpc = "2.0")
+    list(jsonrpc = as_scalar("2.0"))
   )
   expect_equal(
     JsonRpcRequest$new(method = "manifest")$dehydrate(),
-    list(jsonrpc = "2.0", method = "manifest")
+    list(jsonrpc = as_scalar("2.0"), method = as_scalar("manifest"))
   )
 })
 
@@ -64,8 +64,11 @@ test_that("can serialize() a request to JSON", {
     "{\"jsonrpc\":\"2.0\",\"method\":\"manifest\"}"
   )
   expect_equal(
-    JsonRpcRequest$new(method = "execute", params = list(node = 42))$serialize(),
-    "{\"jsonrpc\":\"2.0\",\"method\":\"execute\",\"params\":{\"node\":42}}"
+    JsonRpcRequest$new(
+      method = "execute",
+      params = list(node = c(41, 42))
+    )$serialize(),
+    "{\"jsonrpc\":\"2.0\",\"method\":\"execute\",\"params\":{\"node\":[41,42]}}"
   )
 })
 
@@ -82,11 +85,14 @@ test_that("can construct a response", {
 
 test_that("can serialize() a response to JSON ", {
   expect_equal(
-    JsonRpcResponse$new(id = "an-id", result = stencilaschema::CodeChunk(
-      programmingLanguage = "r",
-      text = "head(mtcars)",
-      outputs = list(head(mtcars))
-    ))$serialize(),
+    JsonRpcResponse$new(
+      id = "an-id",
+      result = stencilaschema::CodeChunk(
+        programmingLanguage = "r",
+        text = "head(mtcars)",
+        outputs = list(head(mtcars))
+      )
+    )$serialize(),
     # nolint start
     "{\"jsonrpc\":\"2.0\",\"id\":\"an-id\",\"result\":{\"type\":\"CodeChunk\",\"text\":\"head(mtcars)\",\"programmingLanguage\":\"r\",\"outputs\":[[{\"mpg\":21,\"cyl\":6,\"disp\":160,\"hp\":110,\"drat\":3.9,\"wt\":2.62,\"qsec\":16.46,\"vs\":0,\"am\":1,\"gear\":4,\"carb\":4,\"_row\":\"Mazda RX4\"},{\"mpg\":21,\"cyl\":6,\"disp\":160,\"hp\":110,\"drat\":3.9,\"wt\":2.875,\"qsec\":17.02,\"vs\":0,\"am\":1,\"gear\":4,\"carb\":4,\"_row\":\"Mazda RX4 Wag\"},{\"mpg\":22.8,\"cyl\":4,\"disp\":108,\"hp\":93,\"drat\":3.85,\"wt\":2.32,\"qsec\":18.61,\"vs\":1,\"am\":1,\"gear\":4,\"carb\":1,\"_row\":\"Datsun 710\"},{\"mpg\":21.4,\"cyl\":6,\"disp\":258,\"hp\":110,\"drat\":3.08,\"wt\":3.215,\"qsec\":19.44,\"vs\":1,\"am\":0,\"gear\":3,\"carb\":1,\"_row\":\"Hornet 4 Drive\"},{\"mpg\":18.7,\"cyl\":8,\"disp\":360,\"hp\":175,\"drat\":3.15,\"wt\":3.44,\"qsec\":17.02,\"vs\":0,\"am\":0,\"gear\":3,\"carb\":2,\"_row\":\"Hornet Sportabout\"},{\"mpg\":18.1,\"cyl\":6,\"disp\":225,\"hp\":105,\"drat\":2.76,\"wt\":3.46,\"qsec\":20.22,\"vs\":1,\"am\":0,\"gear\":3,\"carb\":1,\"_row\":\"Valiant\"}]]}}"
     # nolint end

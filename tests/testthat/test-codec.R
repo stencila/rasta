@@ -75,6 +75,33 @@ describe("decode", {
         c("casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower")
       )
     })
+
+    test_that("decodes single row data.frame to JSON correctly", {
+      # This is a regression test added when it was found that
+      # a single row data.frame, when converted to JSON had a scalar,
+      # instead of an array, for it's column values
+      datatable <- decode(data.frame(a = 1, b = "a"))
+
+      expect_equal(length(datatable$columns), 2)
+      expect_equal(
+        datatable_colnames(datatable),
+        c("a", "b")
+      )
+      expect_equal(
+        datatable_coltypes(datatable),
+        c("NumberValidator", "EnumValidator")
+      )
+
+      expect_equal(datatable$columns[[1]]$values, 1)
+      expect_equal(datatable$columns[[2]]$values, "a")
+
+      expect_equal(
+        to_json(datatable),
+        # nolint start
+        '{"type":"Datatable","columns":[{"type":"DatatableColumn","name":"a","values":[1],"validator":{"type":"ArrayValidator","itemsValidator":{"type":"NumberValidator"}}},{"type":"DatatableColumn","name":"b","values":["a"],"validator":{"type":"ArrayValidator","itemsValidator":{"type":"EnumValidator","values":["a"]}}}]}'
+        # nolint end
+      )
+    })
   })
 
   it("decodes base plots to ImageObjects", {

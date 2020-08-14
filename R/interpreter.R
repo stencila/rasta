@@ -164,11 +164,11 @@ Interpreter <- R6::R6Class( # nolint
           node$outputs <- map(outputs, decode, options)
         } else if (node$type == "CodeExpression") {
           # CodeExpressions must have a single output, use the last one
-          node$output <- decode(outputs[[length(outputs)]], options)
+          node$output <- as_scalar(decode(outputs[[length(outputs)]], options))
         }
       }
       node$errors <- if (length(errors) > 0) errors else NULL
-      node$duration <- duration
+      node$duration <- as_scalar(duration)
 
       if (!missing(then)) then(node)
       else return(node)
@@ -200,7 +200,7 @@ Interpreter <- R6::R6Class( # nolint
     #' it can be used as a peer by other executors.
     register = function() {
       write(
-        to_json(self$manifest(), pretty = TRUE),
+        jsonlite::toJSON(self$manifest(), auto_unbox = TRUE, force = TRUE, pretty = TRUE),
         file.path(home_dir("executors", ensure = TRUE), "rasta.json")
       )
     },

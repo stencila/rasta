@@ -42,9 +42,9 @@ JsonRpcRequest <- R6::R6Class(
     #' @description Dehydrate the request to a `list`
     dehydrate = function() {
       filter(list(
-        jsonrpc = "2.0",
-        id = self$id,
-        method = self$method,
+        jsonrpc = as_scalar("2.0"),
+        id = as_scalar(self$id),
+        method = as_scalar(self$method),
         params = self$params
       ), negate(is.null))
     },
@@ -142,8 +142,8 @@ JsonRpcResponse <- R6::R6Class(
     #' @description Dehydrate the response to a `list`
     dehydrate = function() {
       filter(list(
-        jsonrpc = "2.0",
-        id = self$id,
+        jsonrpc = as_scalar("2.0"),
+        id = as_scalar(self$id),
         result = self$result,
         error = if (!is.null(self$error)) self$error$dehydrate() else NULL
       ), negate(is.null))

@@ -3,6 +3,7 @@
 #' @include stdio-server.R
 #' @include pipe-server.R
 #' @useDynLib rasta
+#' @import stencilaschema
 #' @importFrom Rcpp sourceCpp
 NULL
 

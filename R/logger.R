@@ -57,7 +57,7 @@ set_log_handler <- function(handler) {
 #'
 #' @param data The log event data to handle
 default_log_handler <- function(data) {
-  json <- to_json(data)
+  json <- jsonlite::toJSON(data, auto_unbox = TRUE, force = TRUE)
   dest <- stderr()
   write(json, dest)
   flush(dest)
