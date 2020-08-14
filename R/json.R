@@ -14,7 +14,7 @@ library(stencilaschema)
 #' Declare that a node is scalar
 #'
 #' So that the object is "unboxed" when serialized to JSON
-#' 
+#'
 #' @param object The object to mark as a scalar
 as_scalar <- function(object) {
   if (!is.null(object)) {

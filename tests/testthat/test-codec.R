@@ -80,7 +80,7 @@ describe("decode", {
       # This is a regression test added when it was found that
       # a single row data.frame, when converted to JSON had a scalar,
       # instead of an array, for it's column values
-      datatable <- decode(data.frame(a = 1, b = "a"))
+      datatable <- decode(data.frame(a = 1, b = as.factor("a")))
 
       expect_equal(length(datatable$columns), 2)
       expect_equal(
