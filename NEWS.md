@@ -1,5 +1,12 @@
 # News
 
+## [0.7.1](https://github.com/stencila/rasta/compare/v0.7.0...v0.7.1) (2020-08-14)
+
+
+### Bug Fixes
+
+* Improve serialization to/from JSON ([3f148d3](https://github.com/stencila/rasta/commit/3f148d35f29a6e4b242bf086147e42a3e5064209))
+
 # [0.7.0](https://github.com/stencila/rasta/compare/v0.6.0...v0.7.0) (2020-08-13)
 
 
