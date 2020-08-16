@@ -164,7 +164,8 @@ Interpreter <- R6::R6Class( # nolint
           node$outputs <- map(outputs, decode, options)
         } else if (node$type == "CodeExpression") {
           # CodeExpressions must have a single output, use the last one
-          node$output <- as_scalar(decode(outputs[[length(outputs)]], options))
+          last <- outputs[[length(outputs)]]
+          node$output <- as_scalar(decode(last, options))
         }
       }
       node$errors <- if (length(errors) > 0) errors else NULL

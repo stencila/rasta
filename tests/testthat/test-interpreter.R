@@ -20,6 +20,18 @@ test_that("execute() works with a CodeChunk", {
   expect_true(chunk$duration > 0)
 })
 
+test_that("execute() works with a CodeExpression", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(stencilaschema::CodeExpression(
+    programmingLanguage = "r",
+    text = "6 * 7"
+  ))
+  expect_equal(chunk$output, as_scalar(42))
+  expect_null(chunk$errors)
+  expect_true(chunk$duration > 0)
+})
+
 test_that("execute() persists session state between calls", {
   interpreter <- Interpreter$new()
 
