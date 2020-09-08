@@ -38,6 +38,12 @@ git clone git@github.com:stencila/rasta
 cd rasta
 ```
 
+Then install the necessary development dependencies,
+
+```bash
+make setup
+```
+
 Most development tasks can be run from R, using `make` shortcuts, or RStudio keyboard shortcuts.
 
 Task                                                    | `make`                | R/RStudio       |
