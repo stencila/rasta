@@ -74,6 +74,44 @@ test_that("execute() sets the width and height of image outputs", {
   expect_false(isTRUE(all.equal(chunk2$outputs, chunk3$outputs)))
 })
 
+
+test_that("execute() produces one output for each base graphics plot", {
+  interpreter <- Interpreter$new()
+
+  # One plot created by two statements
+  chunk1 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1)\nabline(0, 1)"
+  ))
+  expect_equal(length(chunk1$outputs), 1)
+  
+  # One plot created by three statements
+  chunk2 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1)\nabline(0, 1);axis(1)"
+  ))
+  expect_equal(length(chunk2$outputs), 1)
+  
+  # One plot created by three statements and by two calls to plot
+  # within the same chunk not separated by a different output
+  chunk3 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1); abline(0, 1)\n#A comment\nplot(2)"
+  ))
+  expect_equal(length(chunk3$outputs), 1)
+  
+  # Two plots in the same chunk, separated by another output type
+  chunk4 <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1); abline(0, 1)\n'An output'\nplot(2)"
+  ))
+  expect_equal(length(chunk4$outputs), 3)
+  expect_equal(chunk4$outputs[[1]]$type, as_scalar("ImageObject"))
+  expect_equal(mode(chunk4$outputs[[2]]), "character")
+  expect_equal(chunk4$outputs[[3]]$type, as_scalar("ImageObject"))
+})
+
+
 test_that("execute() sends warning messages to the log", {
   interpreter <- Interpreter$new()
 

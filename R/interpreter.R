@@ -160,8 +160,19 @@ Interpreter <- R6::R6Class( # nolint
       # Update the properties of the node and return it
       if (length(outputs) > 0) {
         if (node$type == "CodeChunk") {
-          # CodeChunks can have multiple outputs
-          node$outputs <- map(outputs, decode, options)
+          # CodeChunks can have multiple output nodes
+          # Iterate over outputs and group recordedplot objects so that
+          # multiple grahics commands for same plot do not result in multiple
+          # outputs. Non-recordedplot outputs separate the base graphics plots.
+          # Note: this does not need to be done for ggplots
+          node$outputs <- list()
+          previous <- NULL
+          for (output in outputs) {
+            if (!(inherits(output, "recordedplot") && inherits(previous, "recordedplot"))) {
+              node$outputs <- c(node$outputs, list(decode(output, options)))
+              previous <- output
+            }
+          }
         } else if (node$type == "CodeExpression") {
           # CodeExpressions must have a single output, use the last one
           last <- outputs[[length(outputs)]]
