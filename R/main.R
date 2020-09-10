@@ -1,7 +1,6 @@
 #' @include globals.R
 #' @include interpreter.R
 #' @include stdio-server.R
-#' @include pipe-server.R
 #' @useDynLib rasta
 #' @import stencilaschema
 #' @importFrom Rcpp sourceCpp
@@ -19,9 +18,8 @@ register <- function() Interpreter$new()$register() #nocov
 #' @export
 #'
 #' @param stdio Start a [`StdioServer`] for the interpreter?
-#' @param pipe Start a [`PipeServer`] for the interpreter?
 #' @param background Run the interpreter in the background with this duration, in seconds.
-start <- function(stdio = TRUE, pipe = FALSE, background = -1) {
+start <- function(stdio = TRUE, background = -1) {
   # If this is an interactive environment then do not
   # start StdioServer and ensure that the server is run in the
   # background.
@@ -32,7 +30,6 @@ start <- function(stdio = TRUE, pipe = FALSE, background = -1) {
 
   servers <- list()
   if (stdio) servers <- c(servers, StdioServer$new())
-  if (pipe || length(servers) == 0) servers <- c(servers, PipeServer$new())
 
   interpreter <- Interpreter$new(servers)
   globals[["interpreter"]] <- interpreter

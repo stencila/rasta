@@ -71,3 +71,8 @@ Documentation is written using `roxygen2` and the documentation site is generate
 ### Continuous integration
 
 Tests are run on [Travis](https://travis-ci.org/stencila/rasta) and code coverage tracked at [Codecov](https://codecov.io/gh/stencila/rasta).
+
+## Notes
+
+- This package provides a `StdioServer` class which implements Stencila's execution API over standard input / output streams. It is analogous to the [`StdioServer`](https://github.com/stencila/executa/blob/v1.14.0/src/stdio/StdioServer.ts) class implemented in Typescript in the `stencila/executa` package. A previous version of this repository implemented a [`PipeServer`](https://github.com/stencila/rasta/blob/v0.7.1/R/pipe-server.R) class which used named pipes as the transport. However, this was not used in production, and so in the interest of keeping the code base as simple as possible, was removed. This note is intended for developers who might find a need to use the API over named pipes in the future.
+ 

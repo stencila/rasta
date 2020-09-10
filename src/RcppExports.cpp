@@ -5,17 +5,6 @@
 
 using namespace Rcpp;
 
-// pipe_make
-bool pipe_make(std::string name);
-RcppExport SEXP _rasta_pipe_make(SEXP nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(pipe_make(name));
-    return rcpp_result_gen;
-END_RCPP
-}
 // stream_write_message
 bool stream_write_message(std::string message, std::string stream, long offset);
 RcppExport SEXP _rasta_stream_write_message(SEXP messageSEXP, SEXP streamSEXP, SEXP offsetSEXP) {
@@ -44,7 +33,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rasta_pipe_make", (DL_FUNC) &_rasta_pipe_make, 1},
     {"_rasta_stream_write_message", (DL_FUNC) &_rasta_stream_write_message, 3},
     {"_rasta_stream_read_message", (DL_FUNC) &_rasta_stream_read_message, 3},
     {NULL, NULL, 0}

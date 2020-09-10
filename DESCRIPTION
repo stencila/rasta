@@ -44,7 +44,6 @@ Collate:
     'os.R'
     'interpreter.R'
     'json.R'
-    'pipe-server.R'
     'main.R'
 LinkingTo: 
     Rcpp
