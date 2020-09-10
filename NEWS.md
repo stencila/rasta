@@ -1,5 +1,12 @@
 # News
 
+# [0.8.0](https://github.com/stencila/rasta/compare/v0.7.1...v0.8.0) (2020-09-10)
+
+
+### Features
+
+* **PipeServer:** Remove unused server class ([5001f4c](https://github.com/stencila/rasta/commit/5001f4c6950126d53fa04405d2c838541218d597))
+
 ## [0.7.1](https://github.com/stencila/rasta/compare/v0.7.0...v0.7.1) (2020-08-14)
 
 
