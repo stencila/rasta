@@ -1,5 +1,12 @@
 # News
 
+## [0.8.1](https://github.com/stencila/rasta/compare/v0.8.0...v0.8.1) (2020-09-10)
+
+
+### Bug Fixes
+
+* **Interpreter:** Group recordedplot outputs ([0fe994d](https://github.com/stencila/rasta/commit/0fe994d4be238a44a748b5b7adb0089d4f06aca8)), closes [#3](https://github.com/stencila/rasta/issues/3)
+
 # [0.8.0](https://github.com/stencila/rasta/compare/v0.7.1...v0.8.0) (2020-09-10)
 
 
