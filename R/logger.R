@@ -1,6 +1,7 @@
 #' @include globals.R
+NULL
 
-#' #' Create a logger
+#' Create a logger
 #'
 #' The logger emits log events in a format that is
 #' consistent with [`logga`](https://github.com/stencila/logga):

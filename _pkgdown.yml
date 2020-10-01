@@ -52,17 +52,31 @@ reference:
       from streams.
     contents:
       - stream
-      - starts_with("stream") 
+      - starts_with("stream")
+
+  - title: Logging
+    desc: |
+      Functions for emitting and handling log entries.
+    contents:
+      - logger
+      - default_log_handler
+      - get_log_handler
+      - set_log_handler
 
   - title: Other
     desc: Other utility functions.
     contents:
       - home_dir
       - tmp_dir
-      - logger
       - negate
       - filter
       - map
       - transform
       - reduce
       - starts_with("string")
+      - as_scalar
+      - decode
+      - decode_datatable
+      - decode_datatable_column
+      - globals
+      - json
