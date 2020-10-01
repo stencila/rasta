@@ -1,5 +1,18 @@
 # News
 
+# [0.9.0](https://github.com/stencila/rasta/compare/v0.8.1...v0.9.0) (2020-10-01)
+
+
+### Bug Fixes
+
+* **Deps:** Upgrade Schema version ([d4f4e5b](https://github.com/stencila/rasta/commit/d4f4e5b9650ad35e85d57110bd5a546ad1fb6ab0))
+* **Server:** Reduce the size of debug log entries ([fff41d8](https://github.com/stencila/rasta/commit/fff41d88899bd8412373d532fe1b286503ac4a05))
+
+
+### Features
+
+* **Logging:** Allow stack to be passed to error method ([c375752](https://github.com/stencila/rasta/commit/c375752e7fd9ecc19e3b063169190ace99581ef4))
+
 ## [0.8.1](https://github.com/stencila/rasta/compare/v0.8.0...v0.8.1) (2020-09-10)
 
 
