@@ -74,5 +74,7 @@ Tests are run on [Travis](https://travis-ci.org/stencila/rasta) and code coverag
 
 ## Notes
 
+- This package has two functions, `stream_read_message` and `stream_write_message`, for reading and writing length prefixed messages from/to streams. These functions are implemented in both R and C++ and there is benchmarking code to compare their performance (run `make bench` and look for the outputs in `tests/bench`). The C++ implementations are 2-3 times faster. However, the times involved are small (<100µs for 10k messages) and having C++ code does add complexity and a dependency (`Rcpp`). Given that, we may remove the C++ implementations in the future.
+
 - This package provides a `StdioServer` class which implements Stencila's execution API over standard input / output streams. It is analogous to the [`StdioServer`](https://github.com/stencila/executa/blob/v1.14.0/src/stdio/StdioServer.ts) class implemented in Typescript in the `stencila/executa` package. A previous version of this repository implemented a [`PipeServer`](https://github.com/stencila/rasta/blob/v0.7.1/R/pipe-server.R) class which used named pipes as the transport. However, this was not used in production, and so in the interest of keeping the code base as simple as possible, was removed. This note is intended for developers who might find a need to use the API over named pipes in the future.
  
