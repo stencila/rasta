@@ -70,7 +70,7 @@ describe("round trippin", {
         stencilaschema::Paragraph(
           content = list(
             "A paragraph with some",
-            stencilaschema::Strong(content = c("strong ","emphasis")),
+            stencilaschema::Strong(content = c("strong ", "emphasis")),
             "in it."
           )
         )
