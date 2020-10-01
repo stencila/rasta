@@ -19,19 +19,20 @@
 #'
 #' @param tag The tag for all log events emitted
 logger <- function(tag) {
-  log_event <- function(level, message) {
+  log_event <- function(level, message, stack) {
     data <- list(
       tag = tag,
       time = as.POSIXlt(Sys.time(), "UTC"),
       level = level,
       message = message
     )
+    if (!missing(stack)) data["stack"] <- stack
     handler <- globals$log_handler
     if (!is.function(handler)) handler <- default_log_handler
     handler(data)
   }
   list(
-    error = function(message) log_event(0, message),
+    error = function(message, stack) log_event(0, message, stack),
     warn = function(message) log_event(1, message),
     info = function(message) log_event(2, message),
     debug = function(message) log_event(3, message)
