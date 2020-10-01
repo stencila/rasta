@@ -64,13 +64,14 @@ Server <- R6::R6Class(
       # See the equivalent implementation in Javascript:
       # https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts#L70
 
-      private$log$debug(paste("Received request:", request))
+      private$log$debug("Received request")
+      private$log$debug(request)
       request <- tryCatch(JsonRpcRequest$create(request), error = identity)
 
       # Local function to make the following a little more terse
       respond <- function(...) {
         response <- JsonRpcResponse$new(...)
-        private$log$debug(paste("Sending response:", response$serialize()))
+        private$log$debug("Sending response")
         then(response)
       }
 
@@ -171,7 +172,7 @@ Server <- R6::R6Class(
       invisible(NULL)
     },
 
-    #' Handle requests, logging any unhandled errors or warnings
+    #' Check the incoming message stream and handle any messages
     #'
     #' @param blocking Should the read be a blocking operation?
     check = function(blocking = TRUE) {
@@ -199,6 +200,8 @@ Server <- R6::R6Class(
           # was the only way found to avoid the hanging.
           writeLines(error$message, private$error_file)
 
+          # Errors which are caught via `try` or `tryCatch`` do not generate a traceback
+          # so unfortunately it is not possible to use the `.traceback` function here to add a stack
           private$log$error(error$message)
         }
       )
