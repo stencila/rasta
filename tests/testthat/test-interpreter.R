@@ -20,6 +20,32 @@ test_that("execute() works with a CodeChunk", {
   expect_true(chunk$duration > 0)
 })
 
+test_that("execute() works with a CodeChunk with a label, caption and id", {
+  interpreter <- Interpreter$new()
+
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "plot(1)\nplot(2)\n",
+    label = "Figure 1",
+    id = "fig1",
+    caption = list(
+      stencilaschema::Heading(
+        content = "Figure title",
+        depth = 2
+      ),
+      stencilaschema::Paragraph(
+        content = "Figure details"
+      )
+    )
+  ))
+  expect_equal(chunk$label, as_scalar("Figure 1"))
+  expect_equal(chunk$id, as_scalar("fig1"))
+  expect_true(is.list(chunk$caption))
+  expect_equal(length(chunk$caption), 2)
+  expect_null(chunk$errors)
+  expect_true(chunk$duration > 0)
+})
+
 test_that("execute() works with a CodeExpression", {
   interpreter <- Interpreter$new()
 
@@ -84,14 +110,14 @@ test_that("execute() produces one output for each base graphics plot", {
     text = "plot(1)\nabline(0, 1)"
   ))
   expect_equal(length(chunk1$outputs), 1)
-  
+
   # One plot created by three statements
   chunk2 <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
     text = "plot(1)\nabline(0, 1);axis(1)"
   ))
   expect_equal(length(chunk2$outputs), 1)
-  
+
   # One plot created by three statements and by two calls to plot
   # within the same chunk not separated by a different output
   chunk3 <- interpreter$execute(stencilaschema::CodeChunk(
@@ -99,7 +125,7 @@ test_that("execute() produces one output for each base graphics plot", {
     text = "plot(1); abline(0, 1)\n#A comment\nplot(2)"
   ))
   expect_equal(length(chunk3$outputs), 1)
-  
+
   # Two plots in the same chunk, separated by another output type
   chunk4 <- interpreter$execute(stencilaschema::CodeChunk(
     programmingLanguage = "r",
