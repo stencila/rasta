@@ -65,7 +65,6 @@ Server <- R6::R6Class(
       # https://github.com/stencila/executa/blob/v1.6.0/src/base/Server.ts#L70
 
       private$log$debug("Received request")
-      private$log$debug(request)
       request <- tryCatch(JsonRpcRequest$create(request), error = identity)
 
       # Local function to make the following a little more terse
