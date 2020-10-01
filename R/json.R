@@ -26,7 +26,7 @@ as_scalar <- function(object) {
 to_json <- function(object, pretty = FALSE) {
   # Unbox scalar properties of Stencila nodes.
   # This is necessary because otherwise numbers, strings etc get
-  # stringifies as arrays of numbers, strings etc
+  # stringified as arrays of numbers, strings etc
   # It is not possible to use `auto_unbox` in `jsonlite::toJSON`
   # because that risks unboxing things that should not be e.g.
   # `DatatableColumn$values` of length 1.
