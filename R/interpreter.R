@@ -162,7 +162,7 @@ Interpreter <- R6::R6Class( # nolint
         if (node$type == "CodeChunk") {
           # CodeChunks can have multiple output nodes
           # Iterate over outputs and group recordedplot objects so that
-          # multiple grahics commands for same plot do not result in multiple
+          # multiple graphics commands for same plot do not result in multiple
           # outputs. Non-recordedplot outputs separate the base graphics plots.
           # Note: this does not need to be done for ggplots
           node$outputs <- list()
