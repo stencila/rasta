@@ -5,6 +5,12 @@ r:
   - release
   - devel
 
+addons:
+  apt:
+    packages:
+      - libharfbuzz-dev
+      - libfribidi-dev
+
 cache: packages
 
 script:
