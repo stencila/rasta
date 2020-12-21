@@ -43,8 +43,8 @@ decode <- function(value, options = list()) {
   }
 }
 
-# The following functions are named after the Stencila schema node types that they encode **to**
-# using snake_case convention
+# The following functions are named after the Stencila schema node types that
+# they decode R objects **to** (using snake_case convention).
 
 decode_image_object <- function(value, options = list(), format = "png") {
   # Check that a graphics device exists for the requested format
@@ -80,9 +80,9 @@ decode_image_object <- function(value, options = list(), format = "png") {
 #' @param df The data frame to convert
 decode_datatable <- function(df) {
   stencilaschema::Datatable(
-    columns = lapply(colnames(df), function(colname) {
+    columns = filter(lapply(colnames(df), function(colname) {
       decode_datatable_column(colname, df[[colname]])
-    })
+    }), function(column) !is.null(column))
   )
 }
 
@@ -101,14 +101,17 @@ decode_datatable_column <- function(name, object) {
       values = levels(object)
     )
     values <- as.character.factor(object)
-  } else {
-    validator <- switch(
-      mode(object),
-      logical = stencilaschema::BooleanValidator(),
-      numeric = stencilaschema::NumberValidator(),
-      character = stencilaschema::StringValidator()
-    )
+  } else if (is.logical(object)) {
+    validator <- stencilaschema::BooleanValidator()
     values <- object
+  } else if (is.numeric(object)) {
+    validator <- stencilaschema::NumberValidator()
+    values <- object
+  } else if (is.character(object)) {
+    validator <- stencilaschema::StringValidator()
+    values <- object
+  } else {
+    return(NULL)
   }
 
   stencilaschema::DatatableColumn(

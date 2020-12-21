@@ -44,6 +44,27 @@ describe("decode", {
       )
     })
 
+    test_that("does not decode some column types", {
+      dt <- decode(
+        data.frame(
+          nums = 1:3,
+          funcs = I(list(min, max, sum)),
+          lists = I(list(list(), list(), list())),
+          factor = c("huey", "dewey", "louie")
+        )
+      )
+
+      expect_equal(length(dt$columns), 2)
+      expect_equal(
+        datatable_colnames(dt),
+        c("nums", "factor")
+      )
+      expect_equal(
+        datatable_coltypes(dt),
+        c("NumberValidator", "EnumValidator")
+      )
+    })
+
     test_that("decodes mtcars", {
       datatable <- decode(mtcars)
 
