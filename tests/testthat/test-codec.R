@@ -16,6 +16,11 @@ describe("decode", {
     expect_equal(decode(list(a = 1, b = 2)), list(a = 1, b = 2))
   })
 
+  it("decodes tables to string representations", {
+    table <- decode(summary(mtcars))
+    expect_equal(is.character(table), TRUE)
+  })
+
   describe("decodes data.frames to Datatables", {
 
     test_that("column types are converted to validators correctly", {
