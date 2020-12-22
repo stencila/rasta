@@ -23,7 +23,7 @@ jobs:
       - script: |
           /tmp/docker exec -t -u 0 ci-container \
           sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
-        displayName: 'Install sudo in container'
+        displayName: 'Install sudo'
 
       - script: |
           sudo apt-get update
@@ -40,8 +40,17 @@ jobs:
       - script: make lint
         displayName: 'Run linting'
       
-      - script: make test
+      - script: Rscript -e 'covr::codecov()'
+        condition: startsWith(variables['r_version']), '4')
+        displayName: 'Run tests and upload coverage'
+
+      - script: make tests
+        condition: not(startsWith(variables['r_version']), '4'))
         displayName: 'Run tests'
 
       - script: make check
         displayName: 'Check package'
+
+      - script: make docs
+        condition: and(succeeded(), startsWith(variables['r_version']), '4'))
+        displayName: 'Build docs'
