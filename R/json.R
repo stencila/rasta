@@ -31,7 +31,7 @@ to_json <- function(object, pretty = FALSE) {
   # because that risks unboxing things that should not be e.g.
   # `DatatableColumn$values` of length 1.
   node <- transform(object, function(node) {
-    cls <- head(class(node), n = 1)
+    cls <- utils::head(class(node), n = 1)
     if (
       !is.null(cls) && cls == "scalar" &&
       !is.null(node) && is.atomic(node) && length(dim(node)) == 1
