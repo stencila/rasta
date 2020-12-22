@@ -11,13 +11,14 @@ jobs:
           r_version: '4.0.3'
         linux_36:
           r_version: '3.6.3'
+
     pool:
       vmImage: ubuntu-latest
+
     container:
       image: 'rocker/r-ver:$(r_version)'
       options:  "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
-    variables:
-      R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
+
     steps:
       - script: |
           /tmp/docker exec -t -u 0 ci-container \
@@ -32,9 +33,8 @@ jobs:
             libssl-dev \
             libxml2-dev \
             zlib1g-dev
-          mkdir -p $(R_LIBS_USER)
-          Rscript -e "install.packages('remotes', lib = '$(R_LIBS_USER)', repos = 'https://cloud.r-project.org')"
-          Rscript -e "remotes::install_deps(dependencies = TRUE, force = TRUE, lib = '$(R_LIBS_USER)')"
+          sudo Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
+          sudo Rscript -e "remotes::install_deps(dependencies = TRUE, force = TRUE)"
         displayName: 'Install dependencies'
 
       - script: make lint
