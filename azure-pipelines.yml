@@ -1,0 +1,21 @@
+jobs:
+  - job: test
+    strategy:
+      matrix:
+        linux_40:
+          r_version: '4.0.3'
+        linux_36:
+          r_version: '3.6.3'
+    pool:
+      vmImage: ubuntu-latest
+    container:
+      image: 'rocker/r-ver:$(r_version)'
+    steps:
+      - script: make lint
+        displayName: 'Run linting'
+      
+      - script: make test
+        displayName: 'Run tests'
+
+      - script: make check
+        displayName: 'Check package'
