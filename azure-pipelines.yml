@@ -1,3 +1,8 @@
+# Azure Pipelines config
+#
+# Uses a hack to enable use of sudo to install dependencies
+# See https://github.com/microsoft/azure-pipelines-agent/issues/2043#issuecomment-687983301
+
 jobs:
   - job: test
     strategy:
@@ -10,12 +15,17 @@ jobs:
       vmImage: ubuntu-latest
     container:
       image: 'rocker/r-ver:$(r_version)'
-      options: --user root
+      options:  "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
     variables:
       R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
     steps:
       - script: |
-          apt-get update && sudo apt-get install -y libxml2-dev libssl-dev
+          /tmp/docker exec -t -u 0 ci-container \
+          sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+        displayName: 'Install sudo in container'
+
+      - script: |
+          sudo apt-get update && sudo apt-get install -y libxml2-dev libssl-dev
           mkdir -p $(R_LIBS_USER)
           Rscript -e "install.packages('remotes', lib = '$(R_LIBS_USER)', repos = 'https://cloud.r-project.org')"
           Rscript -e "remotes::install_deps(dependencies = TRUE, lib = '$(R_LIBS_USER)')"
