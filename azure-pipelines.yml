@@ -10,10 +10,12 @@ jobs:
       vmImage: ubuntu-latest
     container:
       image: 'rocker/r-ver:$(r_version)'
+    variables:
+      R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
     steps:
       - script: |
           echo 'options(repos = "https://cloud.r-project.org", Ncpus = 2, crayon.enabled = TRUE)' > ~/.Rprofile
-          mkdir -p $(Agent.BuildDirectory)/R/library
+          mkdir -p $(R_LIBS_USER)
         displayName: "Setup R library"
         
       - script: make setup
