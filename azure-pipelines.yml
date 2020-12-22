@@ -14,11 +14,9 @@ jobs:
       R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
     steps:
       - script: |
-          echo 'options(repos = "https://cloud.r-project.org", Ncpus = 2, crayon.enabled = TRUE)' > ~/.Rprofile
           mkdir -p $(R_LIBS_USER)
-        displayName: "Setup R library"
-        
-      - script: make setup
+          Rscript -e "install.packages('remotes', lib = '$(R_LIBS_USER)', repos = 'https://cloud.r-project.org')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, lib = '$(R_LIBS_USER)')"
         displayName: 'Install dependencies'
 
       - script: make lint
