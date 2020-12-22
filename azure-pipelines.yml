@@ -26,10 +26,15 @@ jobs:
 
       - script: |
           sudo apt-get update
-          sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libgit2-dev \
+            libssl-dev \
+            libxml2-dev \
+            zlib1g-dev
           mkdir -p $(R_LIBS_USER)
           Rscript -e "install.packages('remotes', lib = '$(R_LIBS_USER)', repos = 'https://cloud.r-project.org')"
-          Rscript -e "remotes::install_deps(dependencies = TRUE, lib = '$(R_LIBS_USER)')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, force = TRUE, lib = '$(R_LIBS_USER)')"
         displayName: 'Install dependencies'
 
       - script: make lint
