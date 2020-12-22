@@ -73,14 +73,14 @@ describe("decode", {
     test_that("decodes mtcars", {
       datatable <- decode(mtcars)
 
-      expect_equal(length(datatable$columns), 11)
+      expect_equal(length(datatable$columns), 12)
       expect_equal(
         datatable_colnames(datatable),
-        c("mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+        c("name", "mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
       )
       expect_equal(
         datatable_coltypes(datatable),
-        rep("NumberValidator", 11)
+        c("StringValidator", rep("NumberValidator", 11))
       )
     })
 

@@ -77,12 +77,25 @@ decode_image_object <- function(value, options = list(), format = "png") {
 
 #' Decode an R `data.frame` to a Stencila `Datatable`
 #'
+#' If the data frame has row names that are not the default
+#' (a sequence from 1 to `nrow`), then the first column will
+#' have the name "name" and have the row names as values.
+#'
 #' @param df The data frame to convert
 decode_datatable <- function(df) {
+  row_names <- attr(df, "row.names")
+  if (!identical(row_names, seq_len(nrow(df)))) {
+    columns <- list(decode_datatable_column("name", row_names))
+  } else {
+    columns <- NULL
+  }
+
+  columns <- c(columns, filter(lapply(colnames(df), function(colname) {
+    decode_datatable_column(colname, df[[colname]])
+  }), function(column) !is.null(column)))
+
   stencilaschema::Datatable(
-    columns = filter(lapply(colnames(df), function(colname) {
-      decode_datatable_column(colname, df[[colname]])
-    }), function(column) !is.null(column))
+    columns = columns
   )
 }
 
