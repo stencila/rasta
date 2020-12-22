@@ -55,7 +55,8 @@ describe("decode", {
           nums = 1:3,
           funcs = I(list(min, max, sum)),
           lists = I(list(list(), list(), list())),
-          factor = c("huey", "dewey", "louie")
+          factor = c("huey", "dewey", "louie"),
+          stringsAsFactors = TRUE
         )
       )
 
