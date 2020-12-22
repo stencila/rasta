@@ -11,6 +11,9 @@ jobs:
     container:
       image: 'rocker/r-ver:$(r_version)'
     steps:
+      - script: make setup
+        displayName: 'Install dependencies'
+
       - script: make lint
         displayName: 'Run linting'
       
