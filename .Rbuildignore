@@ -1,10 +1,10 @@
 _pkgdown.yml
 .lintr
 .releaserc
-.travis.yml
 .vscode
 ^.*\.Rproj$
 ^\.Rproj\.user$
+azure-pipelines.yml
 coverage
 docs
 Makefile
