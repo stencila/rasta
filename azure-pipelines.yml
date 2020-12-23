@@ -34,6 +34,7 @@ jobs:
             libssl-dev \
             libxml2-dev \
             nodejs \
+            npm \
             pandoc \
             zlib1g-dev
           sudo Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
