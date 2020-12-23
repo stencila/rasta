@@ -41,16 +41,16 @@ jobs:
         displayName: 'Run linting'
       
       - script: Rscript -e 'covr::codecov()'
-        condition: startsWith(variables['r_version']), '4')
+        condition: startsWith(variables['r_version'], '4')
         displayName: 'Run tests and upload coverage'
 
       - script: make tests
-        condition: not(startsWith(variables['r_version']), '4'))
+        condition: not(startsWith(variables['r_version'], '4'))
         displayName: 'Run tests'
 
       - script: make check
         displayName: 'Check package'
 
       - script: make docs
-        condition: and(succeeded(), startsWith(variables['r_version']), '4'))
+        condition: and(succeeded(), startsWith(variables['r_version'], '4'))
         displayName: 'Build docs'
