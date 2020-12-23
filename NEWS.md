@@ -1,5 +1,17 @@
 # News
 
+# [0.10.0](https://github.com/stencila/rasta/compare/v0.9.0...v0.10.0) (2020-12-23)
+
+
+### Bug Fixes
+
+* **Codec:** Skip some data.frame column types ([48eb94b](https://github.com/stencila/rasta/commit/48eb94baaafad8aed5c73d46b1049ee39e19a382))
+
+
+### Features
+
+* **Codec:** Add row names as a new column ([6fbab53](https://github.com/stencila/rasta/commit/6fbab53cc58a64d352ffb5d741203beadf243f2e))
+
 # [0.9.0](https://github.com/stencila/rasta/compare/v0.8.1...v0.9.0) (2020-10-01)
 
 
