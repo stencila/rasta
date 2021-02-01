@@ -188,7 +188,7 @@ Server <- R6::R6Class(
           }
         },
         warning = function(warning) {
-          log$warn(warning$message)
+          private$log$warn(warning$message)
         },
         error = function(error) {
           # Without the following line, when the parent process is killed,
