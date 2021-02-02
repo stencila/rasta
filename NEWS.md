@@ -1,5 +1,13 @@
 # News
 
+## [0.10.1](https://github.com/stencila/rasta/compare/v0.10.0...v0.10.1) (2021-02-02)
+
+
+### Bug Fixes
+
+* **Encoding:** Handle errors and supress warnings when decoding outputs ([90a1b9a](https://github.com/stencila/rasta/commit/90a1b9a5c137a39b6abfb983b61db4af4181fa3b)), closes [#6](https://github.com/stencila/rasta/issues/6)
+* **Server:** Call own log ([46a29ee](https://github.com/stencila/rasta/commit/46a29eea54a56b6fb665591f54c6a1f1951b4a1e))
+
 # [0.10.0](https://github.com/stencila/rasta/compare/v0.9.0...v0.10.0) (2020-12-23)
 
 
