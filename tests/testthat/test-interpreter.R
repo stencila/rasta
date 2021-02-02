@@ -101,6 +101,28 @@ test_that("execute() sets the width and height of image outputs", {
 })
 
 
+test_that("execute() handles warnings and errors when rendering ggplots in decode function", {
+  interpreter <- Interpreter$new()
+  
+  # An error (data frame has no data): not outputs
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "ggplot(data.frame()) + geom_point(aes(x=x,y=y))",
+  ))
+  expect_equal(chunk$outputs, list())
+  expect_equal(length(chunk$errors), 1)
+  expect_equal(chunk$errors[[1]]$errorMessage, as_scalar("object 'x' not found"))
+  
+  # An warning (NA in data): should still produce an output and no error
+  chunk <- interpreter$execute(stencilaschema::CodeChunk(
+    programmingLanguage = "r",
+    text = "ggplot(data.frame(x=1:3, y=c(1,2,NA))) + geom_point(aes(x=x,y=y))",
+  ))
+  expect_equal(length(chunk$outputs), 1)
+  expect_equal(chunk$outputs[[1]]$type, as_scalar("ImageObject"))
+})
+
+
 test_that("execute() produces one output for each base graphics plot", {
   interpreter <- Interpreter$new()
 

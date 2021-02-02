@@ -104,6 +104,9 @@ Interpreter <- R6::R6Class( # nolint
         }
       }
 
+      # This is noisy, so usually best to leave commented out, but useful in some situations.
+      # private$log$debug(paste('Executing', code))
+
       # Execute the code with timing
       before <- proc.time()[3]
       evaluation <- tryCatch({
@@ -159,25 +162,37 @@ Interpreter <- R6::R6Class( # nolint
 
       # Update the properties of the node and return it
       if (length(outputs) > 0) {
-        if (node$type == "CodeChunk") {
-          # CodeChunks can have multiple output nodes
-          # Iterate over outputs and group recordedplot objects so that
-          # multiple graphics commands for same plot do not result in multiple
-          # outputs. Non-recordedplot outputs separate the base graphics plots.
-          # Note: this does not need to be done for ggplots
-          node$outputs <- list()
-          previous <- NULL
-          for (output in outputs) {
-            if (!(inherits(output, "recordedplot") && inherits(previous, "recordedplot"))) {
-              node$outputs <- c(node$outputs, list(decode(output, options)))
-              previous <- output
+        # Use tryCatch to catch errors and attach them to the chunk
+        tryCatch(
+          # Supress warnings (in future, these might get captured as well)
+          suppressWarnings({
+            if (node$type == "CodeChunk") {
+              # CodeChunks can have multiple output nodes
+              # Iterate over outputs and group recordedplot objects so that
+              # multiple graphics commands for same plot do not result in multiple
+              # outputs. Non-recordedplot outputs separate the base graphics plots.
+              # Note: this does not need to be done for ggplots
+              node$outputs <- list()
+              previous <- NULL
+              for (output in outputs) {
+                if (!(inherits(output, "recordedplot") && inherits(previous, "recordedplot"))) {
+                  node$outputs <- c(node$outputs, list(decode(output, options)))
+                  previous <- output
+                }
+              }
+            } else if (node$type == "CodeExpression") {
+              # CodeExpressions must have a single output, use the last one
+              last <- outputs[[length(outputs)]]
+              node$output <- as_scalar(decode(last, options))
             }
+          }),
+          error = function(error) {
+            errors <<- c(errors, list(stencilaschema::CodeError(
+              errorType = "RuntimeError",
+              errorMessage = as.character(error$message)
+            )))
           }
-        } else if (node$type == "CodeExpression") {
-          # CodeExpressions must have a single output, use the last one
-          last <- outputs[[length(outputs)]]
-          node$output <- as_scalar(decode(last, options))
-        }
+        )
       }
       node$errors <- if (length(errors) > 0) errors else NULL
       node$duration <- as_scalar(duration)
