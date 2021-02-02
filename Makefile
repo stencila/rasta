@@ -2,8 +2,7 @@ all: lint test cover build docs
 
 # Setup the local development environment
 setup:
-	Rscript -e "install.packages('devtools')"
-	Rscript -e "devtools::install_github(c('jimhester/lintr', 'klutometis/roxygen', 'r-lib/bench', 'r-lib/covr', 'r-lib/testthat', 'r-lib/pkgdown'))"
+	Rscript -e "install.packages('devtools'); devtools::install_dev_deps()"
 
 # Do linting
 lint:
