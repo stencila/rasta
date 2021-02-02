@@ -1,5 +1,12 @@
 # News
 
+## [0.10.2](https://github.com/stencila/rasta/compare/v0.10.1...v0.10.2) (2021-02-02)
+
+
+### Bug Fixes
+
+* **Deps:** Update Stencila Schema ([6d44bd6](https://github.com/stencila/rasta/commit/6d44bd6a7473d3bf143f6d6d6bbf3e872d010a52))
+
 ## [0.10.1](https://github.com/stencila/rasta/compare/v0.10.0...v0.10.1) (2021-02-02)
 
 
