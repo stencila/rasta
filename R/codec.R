@@ -19,7 +19,10 @@ decode <- function(value, options = list()) {
   # Of course, the order of these if statements is important.
   # Generally, have the more specific items at the top.
   # Rearrange with caution (and testing!)
-  if (inherits(value, "recordedplot") || inherits(value, "ggplot")) {
+  if (inherits(value, "Entity")) {
+    # A Stencila Schema entity so just return it
+    value
+  } else if (inherits(value, "recordedplot") || inherits(value, "ggplot")) {
     # Decode to an ImageObject
     decode_image_object(value, options = options)
   } else if (inherits(value, "table")) {
