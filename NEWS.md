@@ -1,5 +1,12 @@
 # News
 
+## [0.10.3](https://github.com/stencila/rasta/compare/v0.10.2...v0.10.3) (2021-10-11)
+
+
+### Bug Fixes
+
+* **Codec:** Return Stencila entities ([1e1adfc](https://github.com/stencila/rasta/commit/1e1adfceaec5120abce1a35d1176e0663677913d))
+
 ## [0.10.2](https://github.com/stencila/rasta/compare/v0.10.1...v0.10.2) (2021-02-02)
 
 
