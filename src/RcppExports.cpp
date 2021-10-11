@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // stream_write_message
 bool stream_write_message(std::string message, std::string stream, long offset);
 RcppExport SEXP _rasta_stream_write_message(SEXP messageSEXP, SEXP streamSEXP, SEXP offsetSEXP) {
